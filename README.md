@@ -9,7 +9,7 @@ The deployed site can be visited at https://Improbable-AI.github.io
    Git clone this repository, and run
 
    ```shell
-   npm install
+   yarn
    ```
 
 3. **Writing and Viewing Your Page.**
@@ -17,7 +17,7 @@ The deployed site can be visited at https://Improbable-AI.github.io
    Navigate into this directory, and run
 
    ```shell
-   npm run develop
+   yarn develop
    ```
 
 4. **Open the code and start customizing!**
@@ -28,7 +28,7 @@ The deployed site can be visited at https://Improbable-AI.github.io
 5. **When done, to Deploy**
 
    ```shell
-   npm run deploy
+   yarn deploy
    ```
 
 6. **Learn more**

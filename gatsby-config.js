@@ -26,6 +26,8 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         defaultLayouts: { default: path.resolve('./src/components/layout.js') },
+        remarkPlugins: [ require( `remark-math` ) ],
+        rehypePlugins: [ require('rehype-katex') ]
       },
     },
     "gatsby-plugin-sharp",

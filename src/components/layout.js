@@ -1,4 +1,5 @@
 import * as React from "react"
+import "katex/dist/katex.min.css"
 
 // styles
 const pageStyles = {
