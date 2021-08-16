@@ -12,6 +12,7 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
+    "deploy": "gatsby build && gh-pages -d public -b main",
     "clean": "gatsby clean"
   },
   "dependencies": {
