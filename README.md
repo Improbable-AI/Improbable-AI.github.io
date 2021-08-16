@@ -1,5 +1,7 @@
 # Improbable-AI Blog
 
+The deployed site can be visited at https://Improbable-AI.github.io
+
 ## 🚀 Quick start
 
 1. **Getting Started**
