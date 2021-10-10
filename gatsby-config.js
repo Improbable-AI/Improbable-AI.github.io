@@ -22,29 +22,29 @@ module.exports = {
         icon: "src/images/icon.png",
       },
     },
+    `gatsby-remark-images`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        defaultLayouts: { default: path.resolve('./src/components/layout.js') },
-        remarkPlugins: [ require( `remark-math` ) ],
-        rehypePlugins: [ require('rehype-katex') ]
+        defaultLayouts: {default: path.resolve('./src/components/layout.js')},
+        remarkPlugins: [require(`remark-math`)],
+        rehypePlugins: [require('rehype-katex')],
+        gatsbyRemarkPlugins: [ { resolve: `gatsby-remark-images`, options: { maxWidth: 1200, }, }, ],
       },
     },
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: `gatsby-source-filesystem`,
       options: {
-        name: "images",
-        path: "./src/images/",
-      },
-      __key: "images",
+        path: `${__dirname}/src/pages`,
+      }
     },
     {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "pages",
-        path: "./src/pages/",
+        path: `${__dirname}/src/pages/`,
       },
       __key: "pages",
     },
