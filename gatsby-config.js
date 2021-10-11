@@ -22,6 +22,38 @@ module.exports = {
         icon: "src/images/icon.png",
       },
     },
+      {
+    resolve: `gatsby-remark-videos`,
+    options: {
+      pipelines: [
+        {
+          name: 'vp9',
+          transcode: chain =>
+            chain
+              .videoCodec('libvpx-vp9')
+              .noAudio()
+              .outputOptions(['-crf 20', '-b:v 0']),
+          maxHeight: 480,
+          maxWidth: 900,
+          fileExtension: 'webm',
+        },
+        {
+          name: 'h264',
+          transcode: chain =>
+            chain
+              .videoCodec('libx264')
+              .noAudio()
+              .addOption('-profile:v', 'main')
+              .addOption('-pix_fmt', 'yuv420p')
+              .outputOptions(['-movflags faststart'])
+              .videoBitrate('1000k'),
+          maxHeight: 480,
+          maxWidth: 900,
+          fileExtension: 'mp4',
+        },
+      ],
+    }
+  },
     `gatsby-remark-images`,
     {
       resolve: `gatsby-plugin-mdx`,
