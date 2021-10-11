@@ -40,13 +40,13 @@ These videos show the rollouts of the RL agent during training, evaluated at dif
 
 What if, instead, we train using a task curriculum? We design a simple curriculum where the number of blocks increases by one in each stage. We denote this curriculum as the **Sequential** curriculum in the reward curve plot below.
 
-![rel_rl_images/Untitled%201.png](rel_rl_images/Untitled%201.png)
+![rel_rl_images/Untitled_1.png](rel_rl_images/Untitled_1.png)
 
 Our curriculum of six stages where each stage adds a block
 
 The agent's progress still stalls at the second stage as seen in the yellow curve below. This agent uses a multilayer perceptron (MLP) architecture for encoding the environment state.
 
-![rel_rl_images/Untitled%202.png](rel_rl_images/Untitled%202.png)
+![rel_rl_images/Untitled_2.png](rel_rl_images/Untitled_2.png)
 
 Plot showing the average blocks stacked for an MLP architecture using two different task distributions
 
@@ -56,13 +56,13 @@ Different architectures handle the changes in the state space differently. For a
 
 To overcome this issue, we utilize an architecture called *ReNN - Relational Neural Network,* which consists of a series of [self-attention layers](https://arxiv.org/abs/1706.03762) and a final pooling operation to output an action. Unlike fully connected networks, self-attention can effectively represent sets of arbitrary size. Therefore, it is possible that *ReNN* succeeds at transferring the stacking policy between subsequent stages in the curriculum. Empirically, we indeed find this transfer to occur. 
 
-![rel_rl_images/Untitled%203.png](rel_rl_images/Untitled%203.png)
+![rel_rl_images/Untitled_3.png](rel_rl_images/Untitled_3.png)
 
 Depiction of the state space graph, which is provided by the environment at each timestep. Node $X_i$ represents the state of block $i$ (colored accordingly). Edges between nodes represent physical interactions, which are implicitly modeled by self-attention.
 
 **We found that the self-attention architecture and the task curriculum are both necessary to efficiently solve our final task of stacking six blocks.** 
 
-![rel_rl_images/Untitled%204.png](rel_rl_images/Untitled%204.png)
+![rel_rl_images/Untitled_4.png](rel_rl_images/Untitled_4.png)
 
 Plot showing the average number of blocks stacked with respect to total environment steps. If there is a curriculum, the total environment steps include steps from all previous stages of the curriculum.
 
@@ -100,7 +100,7 @@ Simultaneous pick-and-place of two objects
 
 We found that the relational inductive biases of the self-attention architecture were very useful for certain kinds of zero-shot generalization - to more objects in the scene and new goal configurations of the objects. Visualization of these behaviors is shown below. 
 
-![rel_rl_images/Untitled%205.png](rel_rl_images/Untitled%205.png)
+![rel_rl_images/Untitled_5.png](rel_rl_images/Untitled_5.png)
 
 An agent trained on stacking 6 blocks into a single tower (left) generalizes to various configurations with more blocks and new goals (right).
 
