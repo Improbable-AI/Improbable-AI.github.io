@@ -22,46 +22,59 @@ module.exports = {
         icon: "src/images/icon.png",
       },
     },
-      {
-    resolve: `gatsby-remark-videos`,
-    options: {
-      pipelines: [
-        {
-          name: 'vp9',
-          transcode: chain =>
-            chain
-              .videoCodec('libvpx-vp9')
-              .noAudio()
-              .outputOptions(['-crf 20', '-b:v 0']),
-          maxHeight: 480,
-          maxWidth: 900,
-          fileExtension: 'webm',
-        },
-        {
-          name: 'h264',
-          transcode: chain =>
-            chain
-              .videoCodec('libx264')
-              .noAudio()
-              .addOption('-profile:v', 'main')
-              .addOption('-pix_fmt', 'yuv420p')
-              .outputOptions(['-movflags faststart'])
-              .videoBitrate('1000k'),
-          maxHeight: 480,
-          maxWidth: 900,
-          fileExtension: 'mp4',
-        },
-      ],
-    }
-  },
-    `gatsby-remark-images`,
+    {
+      resolve: `gatsby-remark-videos`,
+      options: {
+        pipelines: [
+          {
+            name: 'vp9',
+            transcode: chain =>
+                chain
+                    .videoCodec('libvpx-vp9')
+                    .noAudio()
+                    .outputOptions(['-crf 20', '-b:v 0']),
+            maxHeight: 480,
+            maxWidth: 900,
+            fileExtension: 'webm',
+          },
+          {
+            name: 'h264',
+            transcode: chain =>
+                chain
+                    .videoCodec('libx264')
+                    .noAudio()
+                    .addOption('-profile:v', 'main')
+                    .addOption('-pix_fmt', 'yuv420p')
+                    .outputOptions(['-movflags faststart'])
+                    .videoBitrate('1000k'),
+            maxHeight: 480,
+            maxWidth: 900,
+            fileExtension: 'mp4',
+          },
+        ],
+      }
+    },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        defaultLayouts: {default: path.resolve('./src/components/layout.js')},
+        defaultLayouts: {
+          default: path.resolve('./src/components/layout.js')
+        },
         remarkPlugins: [require(`remark-math`)],
         rehypePlugins: [require('rehype-katex')],
-        gatsbyRemarkPlugins: [ { resolve: `gatsby-remark-images`, options: { maxWidth: 1200, }, }, ],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {maxWidth: 1200,},
+          },
+          {
+            resolve: `gatsby-remark-copy-linked-files`,
+            options: {
+              destinationDir: f => `${f.hash}/${f.name}`,
+              ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
+            },
+          },
+        ],
       },
     },
     "gatsby-plugin-sharp",

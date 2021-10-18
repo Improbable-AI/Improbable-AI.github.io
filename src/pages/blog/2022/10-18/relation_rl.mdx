@@ -1,17 +1,19 @@
+import Video from "../../../../components/video.js"
+
 # Relational Reinforcement Learning for Multi-object Manipulation
 
----
+Article by *Richard Li*, *Pulkit Agrawal*
 
-*Article by Richard Li, Pulkit Agrawal*
-
-Solving complex manipulation tasks involving multiple objects is currently impractical for many reinforcement learning (RL) algorithms due to the long time horizon and the increase in state space with the number of objects. These task characteristics make credit assignment and exploration difficult. Several techniques are commonly used to mitigate these challenges: (i) reward engineering, (ii) expert demonstrations, and (iii) task curriculum. Reward engineering refers to the process of designing a dense reward, which scores the agent's actions at most time-steps. It is well known that reward engineering is time-consuming and can lead to unexpected behaviors ("[reward hacking](https://www.alexirpan.com/2018/02/14/rl-hard.html)"). Alternatively, we might provide the robot with human demonstrations of the task. However, demonstrations are time-consuming, tedious to generate and existing [approach](https://arxiv.org/abs/1709.10089)es still require large amounts of interaction data. 
+Solving complex manipulation tasks involving multiple objects is currently impractical for many reinforcement learning (RL) algorithms due to the long time horizon and the increase in state space with the number of objects. These task characteristics make credit assignment and exploration difficult. Several techniques are commonly used to mitigate these challenges: (i) reward engineering, (ii) expert demonstrations, and (iii) task curriculum. Reward engineering refers to the process of designing a dense reward, which scores the agent's actions at most time-steps. It is well known that reward engineering is time-consuming and can lead to unexpected behaviors ("[reward hacking](https://www.alexirpan.com/2018/02/14/rl-hard.html)"). Alternatively, we might provide the robot with human demonstrations of the task. However, demonstrations are time-consuming, tedious to generate and existing approaches[^1] still require large amounts of interaction data[^2][^3][^4][^5][^6].
 
 We opt for the third technique of providing a task curriculum where a sparse reward is associated with each stage of the curriculum. Using a curriculum involves training the agent to solve a sequence of tasks of increasing difficulty. Curriculum and a sparse reward can be much easier to specify than a dense reward. For example, imagine designing a dense reward for picking and placing a block at the desired goal position ($s_g$).  In order for our agent to learn effectively, we might use the following reward function:
 
-$\begin{aligned}
+$$
+\begin{aligned}
     R &= R_{\text{reach}} + R_{\text{grasp}} + R_{\text{place}} \\
-    &= - ||s_h - s_o||_2 + c_1 \cdot \mathbb{I}_{|| s_h - s_o||_2  < \epsilon} \cdot \mathbb{I}_{s_c} - c_2 \cdot \mathbb{I}_{s_c} \cdot \exp{\frac{||s_o - s_g||^2}{c_3}} 
-\end{aligned}$
+    &= - ||s_h - s_o||_2 + c_1 \cdot \mathbb{I}_{|| s_h - s_o||_2  \lt \epsilon} \cdot \mathbb{I}_{s_c} - c_2 \cdot \mathbb{I}_{s_c} \cdot \exp{\frac{||s_o - s_g||^2}{c_3}}
+\end{aligned}
+$$
 
 Definitions:
 
@@ -20,33 +22,33 @@ Definitions:
 - $s_c$: binary variable for gripper open
 - $s_g$: object goal position
 
-Coming up with the precise functional form and tuning the coefficients $c_1, c_2, c_3$ is generally unintuitive. Even experienced RL engineers find it difficult to design dense reward functions!  
+Coming up with the precise functional form and tuning the coefficients $c_1, c_2, c_3$ is generally unintuitive. Even experienced RL engineers find it difficult to design dense reward functions!
 
 Instead of a dense reward function, it is usually simpler to specify a curriculum and a sparse reward. The reasoning is that designing a curriculum only requires judging the task difficulty, which can be much easier than designing and tuning a dense reward function. For example, we intuitively know that tasks with fewer objects are easier to solve than tasks with more objects. In contrast, it's much harder to reason whether increasing $c_1$ relative to $c_2$ in the reward function will help our agent learn faster or not.
 
 Let us consider the task of stacking multiple blocks into a tower. This task has a long time horizon and involves a large state space. It admits a simple step-wise sparse reward: the agent is rewarded $+1$ for placing each block into a corresponding target position, and $0$ otherwise.
 
-![rel_rl_images/Untitled.png](rel_rl_images/Untitled.png)
+![Untitled.png](Untitled.png)
 
-Blocks must be placed into a stacked goal position denoted by the colored sphere of the corresponding color. 
+Blocks must be placed into a stacked goal position denoted by the colored sphere of the corresponding color.
 
-The agent takes as input a set of state vectors, with one state vector per block comprised of the block's position, orientation, and velocity. The action space is the relative change in position of the end effector and a binary open-or-close command for the gripper. 
+The agent takes as input a set of state vectors, with one state vector per block comprised of the block's position, orientation, and velocity. The action space is the relative change in position of the end effector and a binary open-or-close command for the gripper.
 
-Standard RL fails to perform the task of stacking six blocks using the sparse reward. The agent is unable to stack even a single block! This illustrate the hardness of the task. 
+Standard RL fails to perform the task of stacking six blocks using the sparse reward. The agent is unable to stack even a single block! This illustrate the hardness of the task.
 
-![rel_rl_images/Towards_Practical_Multi-object_Manipulation_using_Relational.gif](rel_rl_images/Towards_Practical_Multi-object_Manipulation_using_Relational.gif)
+![Towards Practical Multi-object Manipulation using Relational](Towards_Practical_Multi-object_Manipulation_using_Relational.gif)
 
 These videos show the rollouts of the RL agent during training, evaluated at different total environment steps.
 
 What if, instead, we train using a task curriculum? We design a simple curriculum where the number of blocks increases by one in each stage. We denote this curriculum as the **Sequential** curriculum in the reward curve plot below.
 
-![rel_rl_images/Untitled_1.png](rel_rl_images/Untitled_1.png)
+![Untitled_1](Untitled_1.png)
 
 Our curriculum of six stages where each stage adds a block
 
 The agent's progress still stalls at the second stage as seen in the yellow curve below. This agent uses a multilayer perceptron (MLP) architecture for encoding the environment state.
 
-![rel_rl_images/Untitled_2.png](rel_rl_images/Untitled_2.png)
+![Untitled_2](Untitled_2.png)
 
 Plot showing the average blocks stacked for an MLP architecture using two different task distributions
 
@@ -54,15 +56,15 @@ The reason for failure is that the agent is unable to transfer its stacking know
 
 Different architectures handle the changes in the state space differently. For an MLP, the input dimension of the first fully-connected (FC) layer is increased to support an additional block, and these new weights are randomly initialized. The issue in this approach is that the distribution of activations throughout the network may drastically change due to the modification in the input of the first FC layer. Consequently, the knowledge from previous tasks is not effectively transferred.
 
-To overcome this issue, we utilize an architecture called *ReNN - Relational Neural Network,* which consists of a series of [self-attention layers](https://arxiv.org/abs/1706.03762) and a final pooling operation to output an action. Unlike fully connected networks, self-attention can effectively represent sets of arbitrary size. Therefore, it is possible that *ReNN* succeeds at transferring the stacking policy between subsequent stages in the curriculum. Empirically, we indeed find this transfer to occur. 
+To overcome this issue, we utilize an architecture called *ReNN - Relational Neural Network,* which consists of a series of [self-attention layers](https://arxiv.org/abs/1706.03762) and a final pooling operation to output an action. Unlike fully connected networks, self-attention can effectively represent sets of arbitrary size. Therefore, it is possible that *ReNN* succeeds at transferring the stacking policy between subsequent stages in the curriculum. Empirically, we indeed find this transfer to occur.
 
-![rel_rl_images/Untitled_3.png](rel_rl_images/Untitled_3.png)
+![ Untitled_3.png]( Untitled_3.png)
 
 Depiction of the state space graph, which is provided by the environment at each timestep. Node $X_i$ represents the state of block $i$ (colored accordingly). Edges between nodes represent physical interactions, which are implicitly modeled by self-attention.
 
-**We found that the self-attention architecture and the task curriculum are both necessary to efficiently solve our final task of stacking six blocks.** 
+**We found that the self-attention architecture and the task curriculum are both necessary to efficiently solve our final task of stacking six blocks.**
 
-![rel_rl_images/Untitled_4.png](rel_rl_images/Untitled_4.png)
+![Untitled_4]( Untitled_4.png)
 
 Plot showing the average number of blocks stacked with respect to total environment steps. If there is a curriculum, the total environment steps include steps from all previous stages of the curriculum.
 
@@ -70,43 +72,44 @@ In the above figure, we see that the green line which uses our self-attention ne
 
 Training with this method requires orders of magnitude fewer interactions and substantially outperforms the [previous best method](https://arxiv.org/abs/1709.10089) relying on demonstrations to accelerate exploration.
 
-$$\begin{array}{|c | c |c |}\hline
+$$
+\begin{array}{|c | c |c |}\hline
      \text{  } & \text{ Nair '18 } & \text{ Ours } \\\hline
      \text{Success Rate}       & 32\%           & \mathbf{75\%} \\\hline
      \text{Environment Steps}     & 2300\text{M}              & \mathbf{30M} \\\hline
-\end{array}$$
+\end{array}
+$$
 
 ### Emergent behaviors
 
-An interesting benefit of training an RL agent with sparse reward is that it automatically learns complex behaviors that improve task performance but are extremely difficult to program by hand. We call these emergent behaviors. Some examples of such behavior are: 
+An interesting benefit of training an RL agent with sparse reward is that it automatically learns complex behaviors that improve task performance but are extremely difficult to program by hand. We call these emergent behaviors. Some examples of such behavior are:
 
 - **Singulation**: In order to not knock over the tower, the agent separates  (i.e. *singulates*) the black block away from the other blocks before picking it up.
 - **Pushing while grasping**: The agent performs a rolling/pushing behavior on the green block while grasping the blue block. This behavior reduces the time required for block stacking.
 - **Simultaneous pick-and-place of two objects**: The agent collects the blue and yellow blocks in hand before placing each one by one, thus reducing the time it takes to stack blocks.
 
-![rel_rl_images/singulation.mp4](rel_rl_images/singulation.mp4)
 
 Singulation
 
-![rel_rl_images/pushing.mp4](rel_rl_images/pushing.mp4)
+<Video src="singulation.mp4" alt="Singulation"/>
 
 Pushing while grasping
 
-![rel_rl_images/pick2place2.mp4](rel_rl_images/pick2place2.mp4)
+<Video src="pick2place2.mp4" alt="pick2place2"/>
 
 Simultaneous pick-and-place of two objects
 
 ### Zero-shot Generalization
 
-We found that the relational inductive biases of the self-attention architecture were very useful for certain kinds of zero-shot generalization - to more objects in the scene and new goal configurations of the objects. Visualization of these behaviors is shown below. 
+We found that the relational inductive biases of the self-attention architecture were very useful for certain kinds of zero-shot generalization - to more objects in the scene and new goal configurations of the objects. Visualization of these behaviors is shown below.
 
-![rel_rl_images/Untitled_5.png](rel_rl_images/Untitled_5.png)
+![ Untitled_5.png]( Untitled_5.png)
 
 An agent trained on stacking 6 blocks into a single tower (left) generalizes to various configurations with more blocks and new goals (right).
 
 ### Future Perspectives
 
-While we are able to stack towers with cubes, there is a lot still to be done! We think the following are some exciting directions for future work: 
+While we are able to stack towers with cubes, there is a lot still to be done! We think the following are some exciting directions for future work:
 
 - **Raw observations:** In this work, we assumed access to the object position, velocity, and other state measurements. In reality, our control algorithm must work from raw observations, such as camera images or point clouds, in order to be deployed on a real robot.
 - **Shape generalization:** A fully general stacking system should be able to stack objects of arbitrary shapes, instead of just cubes. Generalizing to arbitrary shapes presents two major challenges:
@@ -122,11 +125,11 @@ While we are able to stack towers with cubes, there is a lot still to be done! W
 
 - Talk describing the paper delivered virtually at ICRA 2020.
 
-    [rel_rl_images/ICRA2020_presentation_v9_recording.m4v](rel_rl_images/ICRA2020_presentation_v9_recording.m4v)
+    [ ICRA2020_presentation_v9_recording.m4v]( ICRA2020_presentation_v9_recording.m4v)
 
 - Project Slides
 
-    [ICRA2020 Slides](rel_rl_images/ICRA2020_presentation_v9_no_presenter.pdf)
+    [ICRA2020 Slides]( ICRA2020_presentation_v9_no_presenter.pdf)
 
 - [Project Page](https://richardrl.github.io/relational-rl/)
 - [Github](https://github.com/richardrl/rlkit-relational)
@@ -137,12 +140,14 @@ Thanks to Andi Peng, Tao Chen, Anthony Simeonov, and Ge Yang for giving feedback
 
 ### References
 
-1. A. Nair, B. McGrew, M. Andrychowicz, W. Zaremba, and P. Abbeel, “[Overcoming exploration in reinforcement learning with demonstrations](https://arxiv.org/abs/1709.10089),” *CoRR 2017*.
-2. V. Zambaldi, D. Raposo, A. Santoro, V. Bapst, Y. Li, I. Babuschkin,
-K. Tuyls, D. Reichert, T. Lillicrap, E. Lockhart, et al., “[Deep reinforcement learning with relational inductive biases](https://openreview.net/pdf?id=HkxaFoC9KQ),” International Conference on Learning Representations, 2019.
-3. P. Battaglia, R. Pascanu, M. Lai, D. J. Rezende, and K. Kavukcuoglu, “[Interaction networks for learning about objects, relations and physics](https://arxiv.org/abs/1612.00222),” in Proceedings of the 30th International Conference on Neural Information Processing Systems, 2016.
-4. Y. Duan, M. Andrychowicz, B. Stadie, O. Jonathan Ho, J. Schneider,
-I. Sutskever, P. Abbeel, and W. Zaremba, “[One-shot imitation learning](http://papers.nips.cc/paper/6709-one-shot-imitation-learning.pdf),” in Advances in Neural Information Processing Systems, 2017.
-5. M. Janner, S. Levine, W. T. Freeman, J. B. Tenenbaum, C. Finn, and
-J. Wu, “[Reasoning about physical interactions with object-oriented prediction and planning](https://arxiv.org/abs/1812.10972),” in International Conference on Learning Representations, 2019.
-6. OpenAI, M. Plappert, R. Sampedro, T. Xu, I. Akkaya, V. Kosaraju, P. Welinder, R. D’Sa, A. Petron, H. P. de Oliveira Pinto, A. Paino, H. Noh, L. Weng, Q. Yuan, C. Chu, and W. Zaremba, “[Asymmetric self-play for automatic goal discovery in robotic manipulation](https://arxiv.org/abs/2101.04882),” CoRR 2021.
+[^1]: A. Nair, B. McGrew, M. Andrychowicz, W. Zaremba, and P. Abbeel, “[Overcoming exploration in reinforcement learning with demonstrations](https://arxiv.org/abs/1709.10089),” *CoRR 2017*.
+
+[^2]: V. Zambaldi, D. Raposo, A. Santoro, V. Bapst, Y. Li, I. Babuschkin, K. Tuyls, D. Reichert, T. Lillicrap, E. Lockhart, et al., “[Deep reinforcement learning with relational inductive biases](https://openreview.net/pdf?id=HkxaFoC9KQ),” International Conference on Learning Representations, 2019.
+
+[^3]: P. Battaglia, R. Pascanu, M. Lai, D. J. Rezende, and K. Kavukcuoglu, “[Interaction networks for learning about objects, relations and physics](https://arxiv.org/abs/1612.00222),” in Proceedings of the 30th International Conference on Neural Information Processing Systems, 2016.
+
+[^4]: Y. Duan, M. Andrychowicz, B. Stadie, O. Jonathan Ho, J. Schneider, I. Sutskever, P. Abbeel, and W. Zaremba, “[One-shot imitation learning](http://papers.nips.cc/paper/6709-one-shot-imitation-learning.pdf),” in Advances in Neural Information Processing Systems, 2017.
+
+[^5]: M. Janner, S. Levine, W. T. Freeman, J. B. Tenenbaum, C. Finn, and J. Wu, “[Reasoning about physical interactions with object-oriented prediction and planning](https://arxiv.org/abs/1812.10972),” in International Conference on Learning Representations, 2019.
+
+[^6]: OpenAI, M. Plappert, R. Sampedro, T. Xu, I. Akkaya, V. Kosaraju, P. Welinder, R. D’Sa, A. Petron, H. P. de Oliveira Pinto, A. Paino, H. Noh, L. Weng, Q. Yuan, C. Chu, and W. Zaremba, “[Asymmetric self-play for automatic goal discovery in robotic manipulation](https://arxiv.org/abs/2101.04882),” CoRR 2021.
