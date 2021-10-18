@@ -14,8 +14,8 @@ const StyledMain = styled.main`
   
   article {
     margin: 0 auto;
-    padding: 0 5% 0 5%;
-    width: 90%;
+    padding: 0 2.5% 0 2.5%;
+    width: 95%;
     max-width: 900px;
     
     h1 {
