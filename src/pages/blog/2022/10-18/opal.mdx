@@ -1,13 +1,9 @@
 ---
-slug: "/blog/2022/10-18/opal"
 date: "2022-10-18"
 title: "OPAL: Offline Primitive Discovery for Accelerating Offline Reinforcement Learning"
+authors: ["Anurag Ajay", "Pulkit Agrawal"]
 ---
-# OPAL: Offline Primitive Discovery for Accelerating Offline Reinforcement Learning
-
-Article by *Anurag Ajay, Pulkit Agrawal*
-
-## Leveraging task-agnostic datasets
+# Leveraging task-agnostic datasets
 
 Several practical concerns may limit the agent’s ability to act directly in the real world. For example, consider the Atlas robot learning via trial and error. This could cause the Atlas to fall frequently requiring costly human supervision for checks and resets (Atkeson et al., 2015), thereby rendering many standard online RL algorithms inapplicable (Matsushima et al., 2020).
 
@@ -30,7 +26,7 @@ In this work, we investigate whether learning *primitive* skills in an unsupervi
 We refer to our proposed framework of using unsupervised learning to extract primitives for offline policy optimization as OPAL. We apply this paradigm to offline RL, where the agent is given a single offline dataset for both the initial unsupervised learning phase and then a
 subsequent task-directed offline policy optimization phase. Despite not using any additional online data, OPAL can dramatically improve offline policy optimization compared to optimizing offline policy directly on action space. We will now describe our method in detail.
 
-## Offline Reinforcement Learning with OPAL
+# Offline Reinforcement Learning with OPAL
 
 ![opal/iclr.bmp](opal/iclr.bmp)
 
@@ -45,11 +41,11 @@ As a result of learning the task policy on temporally extended primitives, we ar
 
 ![tab1-crop](opal/tab1-crop.bmp)
 
-## Leveraging OPAL for other uses
+# Leveraging OPAL for other uses
 
 Finally, we can also use the learned primitives to improve online RL, few-shot imitation learning, and multi-task transfer learning. 
 
-### Few-shot Imitation Learning
+## Few-shot Imitation Learning
 
 ![antmaze_medium_slow](opal/antmaze_medium_slow.gif)
 
@@ -61,7 +57,7 @@ However, our experiments show that relabeling these demonstrations with their in
 
 ![tab2-crop](opal/tab2-crop.bmp)
 
-### Online Multi-task transfer
+## Online Multi-task transfer
 
 Till now, we have learned the task policy offline either with offline RL or imitation learning. We will now leverage the learned primitives to learn the task policy online in multi-task settings. We learn primitives with expert data from pick-and-place task and then use it to learn multi-task policy for Multi-task 10 and Multi-task 50 benchmarks (from metaworld (Yu et al., 2020)), containing 10 and 50 robotic manipulation tasks which needs to be solved simultaneously, as shown in the figure below. See table 4 for results.
 
@@ -73,7 +69,7 @@ Till now, we have learned the task policy offline either with offline RL or imit
 
 ![tab3-crop](opal/tab3-crop.bmp)
 
-## Related Work and Future Perspectives
+# Related Work and Future Perspectives
 
 OPAL is most similar to PARROT (Singh et al., 2021) when it comes to extracting primitives from exploratory datasets of diverse behaviors. However, OPAL uses a VAE model for extracting primitives while PARROT uses normalizing flows for the same. Furthermore, OPAL is primarily evaluated on offline RL while PARROT is mainly evaluated on online visual transfer learning.
 
@@ -95,7 +91,7 @@ In our work, we focused on simple auto-encoding models for representing primitiv
 
 Link to the [Slides](https://drive.google.com/file/d/1PfxFOTY1HjR5jdgHeRtGBR1MoS2fSlbS/view) and [Poster](https://drive.google.com/file/d/1To5N1lg3CMrTkI-hT7Viw4LtaJWaRXis/view)
 
-## References
+# References
 
 [^1]: Christopher G Atkeson, Benzun P Wisely Babu, Nandan Banerjee, Dmitry Berenson, Christoper PBove, Xiongyi Cui, Mathew DeDonato, Ruixiang Du, Siyuan Feng, Perry Franklin, et al. *No falls, no resets: Reliable humanoid behavior in the darpa robotics challenge.* IEEE Humanoids, 2015.
 

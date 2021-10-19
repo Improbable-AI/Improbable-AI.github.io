@@ -6,6 +6,7 @@ module.exports = {
     title: "Improbable-AI.github.io",
   },
   plugins: [
+    "gatsby-plugin-slug",
     "gatsby-plugin-styled-components",
     "gatsby-plugin-image",
     {
@@ -59,7 +60,7 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         defaultLayouts: {
-          default: path.resolve('./src/components/layout.js')
+          default: path.resolve('./src/components/mdx-layout.js')
         },
         remarkPlugins: [require(`remark-math`)],
         rehypePlugins: [require('rehype-katex')],

@@ -1,13 +1,9 @@
 ---
-slug: "/blog/2022/10-18/relation_rl/"
 date: "2022-10-18"
 title: "Relational Reinforcement Learning for Multi-object Manipulation"
+authors: ["Richard Li", "Pulkit Agrawal"]
 ---
 import Video from "../../../../components/video.js"
-
-# Relational Reinforcement Learning for Multi-object Manipulation
-
-Article by *Richard Li*, *Pulkit Agrawal*
 
 Solving complex manipulation tasks involving multiple objects is currently impractical for many reinforcement learning (RL) algorithms due to the long time horizon and the increase in state space with the number of objects. These task characteristics make credit assignment and exploration difficult. Several techniques are commonly used to mitigate these challenges: (i) reward engineering, (ii) expert demonstrations, and (iii) task curriculum. Reward engineering refers to the process of designing a dense reward, which scores the agent's actions at most time-steps. It is well known that reward engineering is time-consuming and can lead to unexpected behaviors ("[reward hacking](https://www.alexirpan.com/2018/02/14/rl-hard.html)"). Alternatively, we might provide the robot with human demonstrations of the task. However, demonstrations are time-consuming, tedious to generate and existing approaches[^1] still require large amounts of interaction data[^2][^3][^4][^5][^6].
 
@@ -85,7 +81,7 @@ $$
 \end{array}
 $$
 
-### Emergent behaviors
+## Emergent behaviors
 
 An interesting benefit of training an RL agent with sparse reward is that it automatically learns complex behaviors that improve task performance but are extremely difficult to program by hand. We call these emergent behaviors. Some examples of such behavior are:
 
@@ -96,15 +92,15 @@ An interesting benefit of training an RL agent with sparse reward is that it aut
 
 Singulation
 
-<Video src="singulation.mp4" alt="Singulation"/>
+<Video src="relation_rl/singulation.mp4" alt="Singulation"/>
 
 Pushing while grasping
 
-<Video src="pick2place2.mp4" alt="pick2place2"/>
+<Video src="relation_rl/pick2place2.mp4" alt="pick2place2"/>
 
 Simultaneous pick-and-place of two objects
 
-### Zero-shot Generalization
+## Zero-shot Generalization
 
 We found that the relational inductive biases of the self-attention architecture were very useful for certain kinds of zero-shot generalization - to more objects in the scene and new goal configurations of the objects. Visualization of these behaviors is shown below.
 
@@ -112,7 +108,7 @@ We found that the relational inductive biases of the self-attention architecture
 
 An agent trained on stacking 6 blocks into a single tower (left) generalizes to various configurations with more blocks and new goals (right).
 
-### Future Perspectives
+## Future Perspectives
 
 While we are able to stack towers with cubes, there is a lot still to be done! We think the following are some exciting directions for future work:
 
@@ -143,7 +139,7 @@ While we are able to stack towers with cubes, there is a lot still to be done! W
 
 Thanks to Andi Peng, Tao Chen, Anthony Simeonov, and Ge Yang for giving feedback and reading earlier drafts of this blog post.
 
-### References
+## References
 
 [^1]: A. Nair, B. McGrew, M. Andrychowicz, W. Zaremba, and P. Abbeel, “[Overcoming exploration in reinforcement learning with demonstrations](https://arxiv.org/abs/1709.10089),” *CoRR 2017*.
 
