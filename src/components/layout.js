@@ -7,10 +7,9 @@ import styled from 'styled-components';
 const StyledMain = styled.main`
   color: #232129;
   padding: 96px;
-  font-size: 16px;
-  font-family: Lato;
-  // font-family: times new roman, -apple-system, Roboto, sans-serif, serif;
-  line-height: 1.3em;
+  font-family: Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
   
   article {
     margin: 0 auto;
@@ -19,10 +18,16 @@ const StyledMain = styled.main`
     max-width: 900px;
     
     h1 {
-      font-family: Lato;
+      font-family: FinancierDisplayWeb;
       font-size: 2em;
       line-height: 1.5em;
       text-align: left;
+      font-weight: 400;
+    }
+    h2 {
+      font-size: 1.2em;
+      font-weight: 500;
+      text-transform: capitalize;
     }
     
     p {
@@ -44,7 +49,6 @@ const IndexPage = ({children, ...props}) => {
         <article>
           {children}
         </article>
-        <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'/>
       </StyledMain>
   )
 }

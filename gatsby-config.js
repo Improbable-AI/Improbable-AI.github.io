@@ -16,6 +16,7 @@ module.exports = {
     },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
+    "gatsby-plugin-mdx-frontmatter",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
@@ -71,7 +72,7 @@ module.exports = {
             resolve: `gatsby-remark-copy-linked-files`,
             options: {
               destinationDir: f => `${f.hash}/${f.name}`,
-              ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
+              ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `tiff`],
             },
           },
         ],
