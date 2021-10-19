@@ -39,7 +39,7 @@ $$
 After learning the above generative model, we can relabel the dataset using the *encoder* to get high-level transitions $(s_0, z, s_c,\sum_{t=0}^{c-1}\gamma^tr_t)$ and low-level transitions $\{(s_t, a_t, z)_{t=0}^{c-1}\}$. Even though we train both the encoder and the primitive policy together, they might still be inconsistent with one another. This is because the primitive policy tries to adapt to the latent vectors z, inferred by a changing encoder. In theory, training both the encoder and the primitive policy for many epochs could resolve the issue. In practice, we found fine-tuning the *primitive policy* using low-level transitions $(s_t, a_t, z)$ with behavioral cloning was sufficient to ensure consistency with the encoder. After fine-tuning the primitive policy, we train a task level policy $\pi_\psi(z|s)$ using high-level transitions with offline RL. We use Conservative Q-Learning (CQL) (Kumar et al., 2020) as our offline RL algorithm. 
 As a result of learning the task policy on temporally extended primitives, we are able to make significant gains on antmaze and kitchen tasks taken from D4RL (Fu et al., 2020).
 
-![tab1-crop](opal/tab1-crop.bmp)
+<img src="opal/tab1-crop.png" alt="tab1-crop" style="zoom:60%;" />
 
 # Leveraging OPAL for other uses
 
@@ -55,7 +55,7 @@ Previously, we assumed that we have access to a task reward function, but only u
 
 However, our experiments show that relabeling these demonstrations with their inferred primitives and then imitating these primitives leads to a much better policy in this setting. 
 
-![tab2-crop](opal/tab2-crop.bmp)
+<img src="opal/tab2-crop.png" alt="tab2-crop" style="zoom:60%;" />
 
 ## Online Multi-task transfer
 
@@ -67,7 +67,7 @@ Till now, we have learned the task policy offline either with offline RL or imit
 
 ![opal/mt10](opal/mt10.gif)
 
-![tab3-crop](opal/tab3-crop.bmp)
+<img src="opal/tab3-crop.png" alt="tab3-crop" style="zoom:60%;" />
 
 # Related Work and Future Perspectives
 
