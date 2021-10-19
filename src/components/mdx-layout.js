@@ -59,16 +59,18 @@ const StyledMain = styled.main`
 
 // markup
 const IndexPage = ({pageContext, children, ...props}) => {
-  console.log(pageContext.frontmatter.title);
-  const author_list = pageContext.frontmatter.authors.map((author) => <span>{author}</span>)
-  const author_plug = joinArray(author_list, ', ')
+  let author_plug;
+  if (pageContext.frontmatter && pageContext.frontmatter.authors) {
+    const author_list = pageContext.frontmatter.authors.map((author) => <span>{author}</span>)
+    author_plug = joinArray(author_list, ', ')
+  }
   return (
       <StyledMain {...props}>
         <title>{pageContext.frontmatter.title || "Improbable Blog"}</title>
         <div className="hero">
           <div className="hero-text">
             <h1 className="title-block">{pageContext.frontmatter.title}</h1>
-            <p>written by {author_plug}</p>
+            {author_plug ? <p>written by {author_plug}</p> : null}
           </div>
         </div>
         <article>
