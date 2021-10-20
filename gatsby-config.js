@@ -65,15 +65,16 @@ module.exports = {
         remarkPlugins: [require(`remark-math`)],
         rehypePlugins: [require('rehype-katex')],
         gatsbyRemarkPlugins: [
-          {
-            resolve: `gatsby-remark-images`,
-            options: {maxWidth: 1200,},
-          },
+          // {
+          //   resolve: `gatsby-remark-images`,
+          //   options: {maxWidth: 1200,},
+          // },
           {
             resolve: `gatsby-remark-copy-linked-files`,
             options: {
               destinationDir: f => `${f.hash}/${f.name}`,
-              ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `tiff`],
+              ignoreFileExtensions: [],
+              // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `tiff`],
             },
           },
         ],

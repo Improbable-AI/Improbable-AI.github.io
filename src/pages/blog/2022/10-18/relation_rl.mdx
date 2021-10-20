@@ -29,17 +29,16 @@ Instead of a dense reward function, it is usually simpler to specify a curriculu
 
 Let us consider the task of stacking multiple blocks into a tower. This task has a long time horizon and involves a large state space. It admits a simple step-wise sparse reward: the agent is rewarded $+1$ for placing each block into a corresponding target position, and $0$ otherwise.
 
-![Untitled.png](relation_rl/Untitled.png)
-
+<img src="relation_rl/Untitled.png" width={300} style={{float: "left", margin: "0 20px 20px 0"}}/>
 Blocks must be placed into a stacked goal position denoted by the colored sphere of the corresponding color.
 
 The agent takes as input a set of state vectors, with one state vector per block comprised of the block's position, orientation, and velocity. The action space is the relative change in position of the end effector and a binary open-or-close command for the gripper.
 
 Standard RL fails to perform the task of stacking six blocks using the sparse reward. The agent is unable to stack even a single block! This illustrate the hardness of the task.
 
-![Towards Practical Multi-object Manipulation using Relational](relation_rl/Towards_Practical_Multi-object_Manipulation_using_Relational.gif)
-
 These videos show the rollouts of the RL agent during training, evaluated at different total environment steps.
+
+<img src="relation_rl/Towards_Practical_Multi-object_Manipulation_using_Relational.gif" maxWidth={500} style={{margin: "0 auto", display: "block"}}/>
 
 What if, instead, we train using a task curriculum? We design a simple curriculum where the number of blocks increases by one in each stage. We denote this curriculum as the **Sequential** curriculum in the reward curve plot below.
 
