@@ -3,7 +3,7 @@ date: "2022-10-18"
 title: "Relational Reinforcement Learning for Multi-object Manipulation"
 authors: ["Richard Li", "Pulkit Agrawal"]
 ---
-import Video from "../../../../../src/components/video.js"
+import Video, {FigureRow, Spacer} from "../../../../../src/components/video.js"
 
 Solving complex manipulation tasks involving multiple objects is currently impractical for many reinforcement learning (RL) algorithms due to the long time horizon and the increase in state space with the number of objects. These task characteristics make credit assignment and exploration difficult. Several techniques are commonly used to mitigate these challenges: (i) reward engineering, (ii) expert demonstrations, and (iii) task curriculum. Reward engineering refers to the process of designing a dense reward, which scores the agent's actions at most time-steps. It is well known that reward engineering is time-consuming and can lead to unexpected behaviors ("[reward hacking](https://www.alexirpan.com/2018/02/14/rl-hard.html)"). Alternatively, we might provide the robot with human demonstrations of the task. However, demonstrations are time-consuming, tedious to generate and existing approaches[^1] still require large amounts of interaction data[^2][^3][^4][^5][^6].
 
@@ -90,18 +90,13 @@ An interesting benefit of training an RL agent with sparse reward is that it aut
 - **Simultaneous pick-and-place of two objects**: The agent collects the blue and yellow blocks in hand before placing each one by one, thus reducing the time it takes to stack blocks.
 
 
-Singulation
-
-<Video src="relation_rl/singulation.mp4" alt="Singulation"/>
-
-Pushing while grasping
-
-<Video src="relation_rl/pushing.mp4" alt="pushing"/>
-
-Simultaneous pick-and-place of two objects
-
-<Video src="relation_rl/pick2place2.mp4" alt="pick2place2"/>
-
+<FigureRow>
+    <Video src="relation_rl/singulation.mp4" alt="Singulation" width="30%" caption="Singulation"/>
+    <Spacer/>
+    <Video src="relation_rl/pushing.mp4" alt="pushing" width="30%" caption="Pushing while grasping"/>
+    <Spacer/>
+    <Video src="relation_rl/pick2place2.mp4" alt="pick2place2" width="30%" caption="Simultaneous pick-and-place of two objects"/>
+</FigureRow>
 
 ## Zero-shot Generalization
 
