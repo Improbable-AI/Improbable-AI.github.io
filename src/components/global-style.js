@@ -9,6 +9,13 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.6;
   }
   
+  .language-citation {
+    display: block;
+    background-color: #f8f8f8;
+    padding: 1em;
+    border-radius: 14px;
+  }
+  
   .gatsby-highlight-code-line {
     background-color: #feb;
     display: block;
