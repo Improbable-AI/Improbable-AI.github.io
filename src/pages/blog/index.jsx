@@ -4,6 +4,8 @@ import {graphql} from "gatsby"
 import styled from "styled-components"
 
 import {Link} from "gatsby"
+import {NavBar} from "../../components/navbar";
+import {GlobalStyle} from "../../components/global-style";
 
 const PostCard = ({post}) => (
     <Link className="post" to={post.fields.slug}>
@@ -13,10 +15,12 @@ const PostCard = ({post}) => (
 )
 
 const StyledBlog = styled.div`
-width: 900px;
-max-width: 95%;
-margin: 0 auto;
-padding: 0 2.5%;
+.content-container { 
+  width: 900px;
+  max-width: 95%;
+  margin: 0 auto;
+  padding: 0 2.5%;
+}
 
 .hero {
   // background: blue;
@@ -49,23 +53,24 @@ a.post {
 }
 `;
 
-export default function BlogIndex({
-                                    data: {
-                                      allMdx: {edges},
-                                    },
-                                  }) {
+export default function BlogIndex({data: {allMdx: {edges},},}) {
   const Posts = edges
       .filter(edge => !!edge.node.frontmatter.date) // You can filter your posts based on some criteria
       .map(edge => <PostCard key={edge.node.id} post={edge.node}/>)
 
   return <StyledBlog>
-    <div className="hero">
-      <div className="hero-text">
-        <h1>The Improbable Blog</h1>
+    <GlobalStyle/>
+    <title>The Improbable Blog</title>
+    <NavBar/>
+    <div className="content-container">
+      <div className="hero">
+        <div className="hero-text">
+          <h1>The Improbable Blog</h1>
+        </div>
       </div>
+      <h2>All Posts</h2>
+      {Posts}
     </div>
-    <h2>All Posts</h2>
-    {Posts}
   </StyledBlog>
 }
 

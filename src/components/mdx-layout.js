@@ -70,7 +70,7 @@ const IndexPage = ({pageContext, children, ...props}) => {
   return (
       <StyledMain {...props}>
         <GlobalStyle/>
-        <title>{title || "Ge Yang"}</title>
+        <title>{title || "Improbable AI"}</title>
         <NavBar/>
         {title
             ? <div className="hero">
