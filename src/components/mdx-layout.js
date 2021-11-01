@@ -5,6 +5,7 @@ import styled from "styled-components"
 import joinArray from "./joinArray";
 import {NavBar} from "./navbar";
 import {GlobalStyle} from "./global-style";
+import {FigureRow, Spacer} from "./video";
 
 // styles
 const StyledMain = styled.main`
@@ -59,9 +60,10 @@ const StyledMain = styled.main`
 
 // markup
 const IndexPage = ({pageContext, children, ...props}) => {
-  let author_plug, title;
+  let author_plug, editor_plug, title;
   if (pageContext.frontmatter) {
-    title = pageContext.frontmatter.title || title
+    title = pageContext.frontmatter.title || title;
+    editor_plug = pageContext.frontmatter.editor || editor_plug;
     if (pageContext.frontmatter.authors) {
       const author_list = pageContext.frontmatter.authors.map((author) => <span>{author}</span>)
       author_plug = joinArray(author_list, ', ')
@@ -76,7 +78,11 @@ const IndexPage = ({pageContext, children, ...props}) => {
             ? <div className="hero">
               <div className="hero-text">
                 <h1 className="title-block">{title}</h1>
-                {author_plug ? <p>written by {author_plug}</p> : null}
+                <FigureRow>
+                  {author_plug ? <p>Written by {author_plug}</p> : null}
+                  {editor_plug ? <Spacer/> : null}
+                  {editor_plug ? <p>Edited by {editor_plug}</p> : null}
+                </FigureRow>
               </div>
             </div> : null}
         <MDXProvider>
