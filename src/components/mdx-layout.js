@@ -1,15 +1,14 @@
 import * as React from "react"
 import "katex/dist/katex.min.css"
-
-import styled from 'styled-components';
+import {MDXProvider} from "@mdx-js/react";
+import styled from "styled-components"
 import joinArray from "./joinArray";
+import {NavBar} from "./navbar";
+import {GlobalStyle} from "./global-style";
 
 // styles
 const StyledMain = styled.main`
-  font-family: Georgia, serif;
-  font-size: 18px;
-  line-height: 1.6;
-  
+ 
   .hero {
     // background: blue;
     width: 100%;
@@ -37,12 +36,13 @@ const StyledMain = styled.main`
     max-width: 900px;
     
     h1 {
-      font-size: 1.2em;
+      font-size: 1.5em;
       line-height: 1.4em;
+      margin: 2em 0 1em;
     }
     h2 {
       font-size: 1.2em;
-      font-weight: 500;
+      font-weight: 700;
       text-transform: capitalize;
     }
     
@@ -59,23 +59,31 @@ const StyledMain = styled.main`
 
 // markup
 const IndexPage = ({pageContext, children, ...props}) => {
-  let author_plug;
-  if (pageContext.frontmatter && pageContext.frontmatter.authors) {
-    const author_list = pageContext.frontmatter.authors.map((author) => <span>{author}</span>)
-    author_plug = joinArray(author_list, ', ')
+  let author_plug, title;
+  if (pageContext.frontmatter) {
+    title = pageContext.frontmatter.title || title
+    if (pageContext.frontmatter.authors) {
+      const author_list = pageContext.frontmatter.authors.map((author) => <span>{author}</span>)
+      author_plug = joinArray(author_list, ', ')
+    }
   }
   return (
       <StyledMain {...props}>
-        <title>{pageContext.frontmatter.title || "Improbable Blog"}</title>
-        <div className="hero">
-          <div className="hero-text">
-            <h1 className="title-block">{pageContext.frontmatter.title}</h1>
-            {author_plug ? <p>written by {author_plug}</p> : null}
-          </div>
-        </div>
-        <article>
-          {children}
-        </article>
+        <GlobalStyle/>
+        <title>{title || "Ge Yang"}</title>
+        <NavBar/>
+        {title
+            ? <div className="hero">
+              <div className="hero-text">
+                <h1 className="title-block">{title}</h1>
+                {author_plug ? <p>written by {author_plug}</p> : null}
+              </div>
+            </div> : null}
+        <MDXProvider>
+          <article>
+            {children}
+          </article>
+        </MDXProvider>
       </StyledMain>
   )
 }
