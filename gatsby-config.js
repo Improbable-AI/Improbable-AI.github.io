@@ -70,12 +70,20 @@ module.exports = {
           //   options: {maxWidth: 1200,},
           // },
           {
+            resolve: `gatsby-remark-copy-images`,
+            options: {
+              destinationDir: f => `${f.hash}/${f.name}`,
+              ignoreFileExtensions: [],
+              // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `tiff`],
+            }
+          },
+          {
             resolve: `gatsby-remark-copy-linked-files`,
             options: {
               destinationDir: f => `${f.hash}/${f.name}`,
               ignoreFileExtensions: [],
               // ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `tiff`],
-            },
+            }
           },
         ],
       },

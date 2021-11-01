@@ -5,17 +5,43 @@ export const FigureRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-items: center;
+  width: 100%;
 `;
 
-const Figure = styled.figure`
+export const Figure = styled.figure`
   display: flex;
   flex-direction: column;
   justify-items: center;
+  ${({width}) => width ? `width: ${width};` : ''}
+  ${({gap}) => gap ? `gap: ${gap};` : ''}
+  
+  img {
+    width: 100%;
+  }
+  
+  figcaption {
+    margin-top: 0.6em;
+    font-style: italic;
+    color: #999;
+    text-align: center;
+  }
 `;
 
 export const Spacer = styled.div`
   flex: auto;
 `;
+
+export const Image = ({
+                         src, alt, title, caption, align = "center",
+                         width, gap, ...props
+                       }) => (
+    <Figure className="figure-container" width={width} gap={gap}>
+      {title ? <h3>{title}</h3> : null}
+      <img src={src} {...props}/>
+      {caption
+          ? <figcaption className="caption">{caption}</figcaption>
+          : null}
+    </Figure>);
 
 export default function Video({
                                 src,

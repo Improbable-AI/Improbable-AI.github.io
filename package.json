@@ -30,6 +30,7 @@
     "gatsby-plugin-sitemap": "^4.7.0",
     "gatsby-plugin-slug": "^2.0.0",
     "gatsby-plugin-styled-components": "^4.11.0",
+    "gatsby-remark-copy-images": "^0.2.1",
     "gatsby-remark-copy-linked-files": "^4.11.0",
     "gatsby-remark-gifs": "^1.0.0",
     "gatsby-remark-images": "^5.11.0",

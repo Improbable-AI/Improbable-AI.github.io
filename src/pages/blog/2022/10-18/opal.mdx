@@ -4,15 +4,19 @@ title: "OPAL: Offline Primitive Discovery for Accelerating Offline Reinforcement
 authors: ["Anurag Ajay", "Pulkit Agrawal"]
 editor: "Ge Yang"
 ---
+import Video, {FigureRow, Figure, Spacer} from "../../../../../src/components/video.js"
+
 # Leveraging task-agnostic datasets
 
 Several practical concerns may limit the agent’s ability to act directly in the real world. For example, consider the Atlas robot learning via trial and error. This could cause the Atlas to fall frequently requiring costly human supervision for checks and resets (Atkeson et al., 2015)[^1], thereby rendering many standard online RL algorithms inapplicable (Matsushima et al., 2020)[^2].
 
-<figure>
-    <img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: inline-block;" src="opal/Untitled.png"/>
-    <img style="width: 28%; margin-left: 40px; margin-right: auto; height: auto; display: inline-block;" src="opal/Screen_Shot_2021-03-16_at_11.54.58_PM.png"/>
-    <div style='margin-left: 450px; height: auto, display:inline;'>(Taken from berkeley CS 285)</div>
-</figure>
+<FigureRow>
+    <Figure width="50%"><img src="opal/Untitled.png"/></Figure>
+    <Figure width="28%">
+        <img src="opal/Screen_Shot_2021-03-16_at_11.54.58_PM.png"/>
+        <figcaption>(Taken from berkeley CS 285)</figcaption>
+    </Figure>
+</FigureRow>
 
 Instead of online interaction, we might have access to large amounts of previously logged data. This data can come from a potentially sub-optimal, but safe hand-engineered policy. We can use these exploratory past data to learn a task policy offline. This problem setup is called offline RL. Despite having tremendous practical applications, offline RL remains limited in its use due to various optimization issues (Levine et al., 2020)[^3]. Prior work (Shankar et al., 2020)[^4] in online RL used temporally extended skills (aka *primitives* (Sutton et al., 1998)[^5]) to extract a **compact action space.** This improves performance by **effectively** reducing the task horizon and** thereby helping in **better credit assignment**. However, it remains unclear if such primitives can help with offline RL.
 
@@ -91,11 +95,10 @@ In our work, we focused on simple auto-encoding models for representing primitiv
 
 **Bibtex**
 
-```
+```citation
 @article{ajay2020opal,
   title={Opal: Offline primitive discovery for accelerating offline reinforcement learning},
   author={Ajay, Anurag and Kumar, Aviral and Agrawal, Pulkit and Levine, Sergey and Nachum, Ofir},
-  journal={arXiv preprint arXiv:2010.13611},
   year={2020}
 }
 ```
