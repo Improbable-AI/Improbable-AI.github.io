@@ -3,7 +3,7 @@ date: "2022-10-18"
 title: "Relational Reinforcement Learning for Multi-object Manipulation"
 authors: ["Richard Li", "Pulkit Agrawal"]
 ---
-import Video from "../../../../components/video.js"
+import Video, {FigureRow, Spacer} from "../../../../../src/components/video.js"
 
 Solving complex manipulation tasks involving multiple objects is currently impractical for many reinforcement learning (RL) algorithms due to the long time horizon and the increase in state space with the number of objects. These task characteristics make credit assignment and exploration difficult. Several techniques are commonly used to mitigate these challenges: (i) reward engineering, (ii) expert demonstrations, and (iii) task curriculum. Reward engineering refers to the process of designing a dense reward, which scores the agent's actions at most time-steps. It is well known that reward engineering is time-consuming and can lead to unexpected behaviors ("[reward hacking](https://www.alexirpan.com/2018/02/14/rl-hard.html)"). Alternatively, we might provide the robot with human demonstrations of the task. However, demonstrations are time-consuming, tedious to generate and existing approaches[^1] still require large amounts of interaction data[^2][^3][^4][^5][^6].
 
@@ -29,26 +29,27 @@ Instead of a dense reward function, it is usually simpler to specify a curriculu
 
 Let us consider the task of stacking multiple blocks into a tower. This task has a long time horizon and involves a large state space. It admits a simple step-wise sparse reward: the agent is rewarded $+1$ for placing each block into a corresponding target position, and $0$ otherwise.
 
-<img src="relation_rl/Untitled.png" width={300} style={{float: "left", margin: "0 20px 20px 0"}}/>
+<img src="relation_rl/Untitled.png" width="30%" style="display: block; margin-left: auto;  margin-right: auto;"/>
+
 Blocks must be placed into a stacked goal position denoted by the colored sphere of the corresponding color.
 
 The agent takes as input a set of state vectors, with one state vector per block comprised of the block's position, orientation, and velocity. The action space is the relative change in position of the end effector and a binary open-or-close command for the gripper.
 
-Standard RL fails to perform the task of stacking six blocks using the sparse reward. The agent is unable to stack even a single block! This illustrate the hardness of the task.
+Standard RL fails to perform the task of stacking six blocks using the sparse reward. The agent is unable to stack even a single block! This illustrates the hardness of the task.
+
 
 These videos show the rollouts of the RL agent during training, evaluated at different total environment steps.
 
-<img src="relation_rl/Towards_Practical_Multi-object_Manipulation_using_Relational.gif" maxWidth={500} style={{margin: "0 auto", display: "block"}}/>
+<img style="width: 60%; height: auto; display: block; margin-left: auto;  margin-right: auto;" src="relation_rl/Towards_Practical_Multi-object_Manipulation_using_Relational.gif"/>
+
 
 What if, instead, we train using a task curriculum? We design a simple curriculum where the number of blocks increases by one in each stage. We denote this curriculum as the **Sequential** curriculum in the reward curve plot below.
-
-![Untitled_1](relation_rl/Untitled_1.png)
 
 Our curriculum of six stages where each stage adds a block
 
 The agent's progress still stalls at the second stage as seen in the yellow curve below. This agent uses a multilayer perceptron (MLP) architecture for encoding the environment state.
 
-![Untitled_2](relation_rl/Untitled_2.png)
+<img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_2.png"/>
 
 Plot showing the average blocks stacked for an MLP architecture using two different task distributions
 
@@ -58,13 +59,13 @@ Different architectures handle the changes in the state space differently. For a
 
 To overcome this issue, we utilize an architecture called *ReNN - Relational Neural Network,* which consists of a series of [self-attention layers](https://arxiv.org/abs/1706.03762) and a final pooling operation to output an action. Unlike fully connected networks, self-attention can effectively represent sets of arbitrary size. Therefore, it is possible that *ReNN* succeeds at transferring the stacking policy between subsequent stages in the curriculum. Empirically, we indeed find this transfer to occur.
 
-![ Untitled_3.png](relation_rl/Untitled_3.png)
+<img style="width: 60%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_3.png"/>
 
 Depiction of the state space graph, which is provided by the environment at each timestep. Node $X_i$ represents the state of block $i$ (colored accordingly). Edges between nodes represent physical interactions, which are implicitly modeled by self-attention.
 
 **We found that the self-attention architecture and the task curriculum are both necessary to efficiently solve our final task of stacking six blocks.**
 
-![Untitled_4](relation_rl/Untitled_4.png)
+<img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_4.png"/>
 
 Plot showing the average number of blocks stacked with respect to total environment steps. If there is a curriculum, the total environment steps include steps from all previous stages of the curriculum.
 
@@ -88,22 +89,19 @@ An interesting benefit of training an RL agent with sparse reward is that it aut
 - **Pushing while grasping**: The agent performs a rolling/pushing behavior on the green block while grasping the blue block. This behavior reduces the time required for block stacking.
 - **Simultaneous pick-and-place of two objects**: The agent collects the blue and yellow blocks in hand before placing each one by one, thus reducing the time it takes to stack blocks.
 
-
-Singulation
-
-<Video src="relation_rl/singulation.mp4" alt="Singulation"/>
-
-Pushing while grasping
-
-<Video src="relation_rl/pick2place2.mp4" alt="pick2place2"/>
-
-Simultaneous pick-and-place of two objects
+<FigureRow>
+    <Video src="relation_rl/singulation.mp4" alt="Singulation" width="30%" caption="Singulation"/>
+    <Spacer/>
+    <Video src="relation_rl/pushing.mp4" alt="pushing" width="30%" caption="Pushing while grasping"/>
+    <Spacer/>
+    <Video src="relation_rl/pick2place2.mp4" alt="pick2place2" width="30%" caption="Simultaneous pick-and-place of two objects"/>
+</FigureRow>
 
 ## Zero-shot Generalization
 
 We found that the relational inductive biases of the self-attention architecture were very useful for certain kinds of zero-shot generalization - to more objects in the scene and new goal configurations of the objects. Visualization of these behaviors is shown below.
 
-![ Untitled_5.png](relation_rl/Untitled_5.png)
+<img style="width: 70%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_5.png"/>
 
 An agent trained on stacking 6 blocks into a single tower (left) generalizes to various configurations with more blocks and new goals (right).
 
@@ -114,8 +112,7 @@ While we are able to stack towers with cubes, there is a lot still to be done! W
 - **Raw observations:** In this work, we assumed access to the object position, velocity, and other state measurements. In reality, our control algorithm must work from raw observations, such as camera images or point clouds, in order to be deployed on a real robot.
 - **Shape generalization:** A fully general stacking system should be able to stack objects of arbitrary shapes, instead of just cubes. Generalizing to arbitrary shapes presents two major challenges:
     - **Sample-efficient RL over raw observations**: Training RL over raw observations can be prohibitively [expensive](https://arxiv.org/abs/2101.04882), requiring hundreds of GPUs. One option is to pre-train on some other task to learn an efficient shape representation and finetune on the object manipulation task. The choice of pre-training task and how to finetune in the RL setup are [open](https://arxiv.org/pdf/1906.11883.pdf) [research](https://arxiv.org/pdf/1903.06684.pdf) [questions](https://arxiv.org/pdf/1910.11977.pdf). It is therefore important to come up with new representations or training strategies that can significantly speed up RL training over raw observations.
-    - @Richard Li lets add one more point on how to represent shapes and orientations with symmetric objects is an open challenge etc. Talk about PointNet, PointNet++ and their weaknesses.
-    - **Automatic curriculum design**: The main task variation we tackled in this work was object cardinality. Smaller numbers of objects were easier to train than larger numbers of objects, and we used this principle to design our curriculum. But what if our task variation involved something more complicated, such as the object shape? It is unclear *a priori* what shapes are easier to stack than other shapes, which means we won't be able to make a simple hand-designed curriculum. Instead, we may need to look into techniques for [automatically](https://arxiv.org/abs/1707.05300) [generating](https://arxiv.org/abs/1707.00183) [curricul](https://arxiv.org/abs/2101.04882)a.
+    - **Automatic curriculum design**: The main task variation we tackled in this work was object cardinality. Smaller numbers of objects were easier to train than larger numbers of objects, and we used this principle to design our curriculum. But what if our task variation involved something more complicated, such as the object shape? It is unclear *a priori* what shapes are easier to stack than other shapes, which means we won't be able to make a simple hand-designed curriculum. Instead, we may need to look into techniques for [automatically](https://arxiv.org/abs/1707.05300) [generating](https://arxiv.org/abs/1707.00183) [curricula](https://arxiv.org/abs/2101.04882).
 
 **This post is based on the following paper:**
 
