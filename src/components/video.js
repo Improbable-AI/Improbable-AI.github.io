@@ -7,7 +7,7 @@ export const FigureRow = styled.div`
   justify-items: center;
 `;
 
-const Figure = styled.div`
+const Figure = styled.figure`
   display: flex;
   flex-direction: column;
   justify-items: center;
@@ -38,7 +38,7 @@ export default function Video({
               Your browser does not support the video tag.
             </video>
             {caption
-                ? <div className="caption" style={{width: "100%"}}>{caption}</div>
+                ? <figcaption className="caption" style={{width: "100%"}}>{caption}</figcaption>
                 : null}
           </Figure>
       );
