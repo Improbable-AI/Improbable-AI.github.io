@@ -4,7 +4,7 @@ title: "Relational Reinforcement Learning for Multi-object Manipulation"
 authors: ["Richard Li", "Pulkit Agrawal"]
 editor: "Ge Yang"
 ---
-import Video, {FigureRow, Spacer} from "../../../../../src/components/video.js"
+import Video, {FigureRow, Figure, Spacer} from "../../../../../src/components/video.js"
 
 Solving complex manipulation tasks involving multiple objects is currently impractical for many reinforcement learning (RL) algorithms due to the long time horizon and the increase in state space with the number of objects. These task characteristics make credit assignment and exploration difficult. Several techniques are commonly used to mitigate these challenges: (i) reward engineering, (ii) expert demonstrations, and (iii) task curriculum. Reward engineering refers to the process of designing a dense reward, which scores the agent's actions at most time-steps. It is well known that reward engineering is time-consuming and can lead to unexpected behaviors ("[reward hacking](https://www.alexirpan.com/2018/02/14/rl-hard.html)"). Alternatively, we might provide the robot with human demonstrations of the task. However, demonstrations are time-consuming, tedious to generate and existing approaches[^1] still require large amounts of interaction data[^2][^3][^4][^5][^6].
 
@@ -30,29 +30,45 @@ Instead of a dense reward function, it is usually simpler to specify a curriculu
 
 Let us consider the task of stacking multiple blocks into a tower. This task has a long time horizon and involves a large state space. It admits a simple step-wise sparse reward: the agent is rewarded $+1$ for placing each block into a corresponding target position, and $0$ otherwise.
 
-<img src="relation_rl/Untitled.png" width="30%" style="display: block; margin-left: auto;  margin-right: auto;"/>
-
-Blocks must be placed into a stacked goal position denoted by the colored sphere of the corresponding color.
+<FigureRow>
+    <Figure>
+        <img src="relation_rl/Untitled.png" width="30%" style="display: block; margin-left: auto; width: 200px; margin-right: auto;"/>
+        <figcaption>Blocks must be placed into a stacked goal position denoted by the colored sphere of the corresponding color.</figcaption>
+    </Figure>
+</FigureRow>
 
 The agent takes as input a set of state vectors, with one state vector per block comprised of the block's position, orientation, and velocity. The action space is the relative change in position of the end effector and a binary open-or-close command for the gripper.
 
 Standard RL fails to perform the task of stacking six blocks using the sparse reward. The agent is unable to stack even a single block! This illustrates the hardness of the task.
 
+<FigureRow>
+    <Figure>
+        <img style="width: 60%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Towards_Practical_Multi-object_Manipulation_using_Relational.gif"/>
+        <figcaption>These videos show the rollouts of the RL agent during training, evaluated at different total environment steps.</figcaption>
+    </Figure>
+</FigureRow>
 
-These videos show the rollouts of the RL agent during training, evaluated at different total environment steps.
 
-<img style="width: 60%; height: auto; display: block; margin-left: auto;  margin-right: auto;" src="relation_rl/Towards_Practical_Multi-object_Manipulation_using_Relational.gif"/>
+What if, instead, we train using a task curriculum? We design a simple curriculum where the number of blocks increases by one in each stage.
+
+<FigureRow>
+    <Figure>
+        <img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_1.png"/>
+        <figcaption>Our curriculum of six stages where each stage adds a block</figcaption>
+    </Figure>
+</FigureRow>
 
 
-What if, instead, we train using a task curriculum? We design a simple curriculum where the number of blocks increases by one in each stage. We denote this curriculum as the **Sequential** curriculum in the reward curve plot below.
-
-Our curriculum of six stages where each stage adds a block
-
+We denote this curriculum as the **Sequential** curriculum in the reward curve plot below.
 The agent's progress still stalls at the second stage as seen in the yellow curve below. This agent uses a multilayer perceptron (MLP) architecture for encoding the environment state.
 
-<img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_2.png"/>
+<FigureRow>
+    <Figure>
+        <img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_2.png"/>
+        <figcaption>Plot showing the average blocks stacked for an MLP architecture using two different task distributions</figcaption>
+    </Figure>
+</FigureRow>
 
-Plot showing the average blocks stacked for an MLP architecture using two different task distributions
 
 The reason for failure is that the agent is unable to transfer its stacking knowledge across different stages of the curriculum. The lack of transfer can be attributed to the failure of the policy operating from the state space $\{ x_1, ..., x_n \}$ to generalize to the state space obtained in the next stage of the curriculum, after we add a new block $x_{n+1}$: $\{ x_1, ..., x_n, x_{n+1}\}$.
 
@@ -60,15 +76,22 @@ Different architectures handle the changes in the state space differently. For a
 
 To overcome this issue, we utilize an architecture called *ReNN - Relational Neural Network,* which consists of a series of [self-attention layers](https://arxiv.org/abs/1706.03762) and a final pooling operation to output an action. Unlike fully connected networks, self-attention can effectively represent sets of arbitrary size. Therefore, it is possible that *ReNN* succeeds at transferring the stacking policy between subsequent stages in the curriculum. Empirically, we indeed find this transfer to occur.
 
-<img style="width: 60%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_3.png"/>
+<FigureRow>
+    <Figure>
+        <img style="width: 60%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_3.png"/>
+        <figcaption>Depiction of the state space graph, which is provided by the environment at each timestep. Node $X_i$ represents the state of block $i$ (colored accordingly). Edges between nodes represent physical interactions, which are implicitly modeled by self-attention.</figcaption>
+    </Figure>
+</FigureRow>
 
-Depiction of the state space graph, which is provided by the environment at each timestep. Node $X_i$ represents the state of block $i$ (colored accordingly). Edges between nodes represent physical interactions, which are implicitly modeled by self-attention.
 
 **We found that the self-attention architecture and the task curriculum are both necessary to efficiently solve our final task of stacking six blocks.**
 
-<img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_4.png"/>
-
-Plot showing the average number of blocks stacked with respect to total environment steps. If there is a curriculum, the total environment steps include steps from all previous stages of the curriculum.
+<FigureRow>
+    <Figure>
+    <img style="width: 50%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_4.png"/>
+    <figcaption>Plot showing the average number of blocks stacked with respect to total environment steps. If there is a curriculum, the total environment steps include steps from all previous stages of the curriculum.</figcaption>
+    </Figure>
+</FigureRow>
 
 In the above figure, we see that the green line which uses our self-attention network (*ReNN*) along with a sequential curriculum, as described previously, outperforms the other ablations by far, and is the only experiment that was able to progress beyond two blocks stacked. For more information about the architecture/curriculum ablations, please refer to the [paper](https://arxiv.org/abs/1912.11032).
 
@@ -102,9 +125,13 @@ An interesting benefit of training an RL agent with sparse reward is that it aut
 
 We found that the relational inductive biases of the self-attention architecture were very useful for certain kinds of zero-shot generalization - to more objects in the scene and new goal configurations of the objects. Visualization of these behaviors is shown below.
 
-<img style="width: 70%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_5.png"/>
+<FigureRow>
+    <Figure>
+        <img style="width: 70%; margin-left: auto; margin-right: auto; height: auto; display: block;" src="relation_rl/Untitled_5.png"/>
+        <figcaption>An agent trained on stacking 6 blocks into a single tower (left) generalizes to various configurations with more blocks and new goals (right).</figcaption>
+    </Figure>
+</FigureRow>
 
-An agent trained on stacking 6 blocks into a single tower (left) generalizes to various configurations with more blocks and new goals (right).
 
 ## Future Perspectives
 
@@ -119,16 +146,23 @@ While we are able to stack towers with cubes, there is a lot still to be done! W
 
 - [Towards Practical Multi-Object Manipulation using Relational Reinforcement Learning](https://arxiv.org/pdf/1912.11032.pdf) by Richard Li, Allan Jabri, Trevor Darrell, and Pulkit Agrawal
 
+**Bibtex:**
+
+```citation
+@inproceedings{li2020towards,
+  title={Towards practical multi-object manipulation using relational reinforcement learning},
+  author={Li, Richard and Jabri, Allan and Darrell, Trevor and Agrawal, Pulkit},
+  booktitle={2020 IEEE International Conference on Robotics and Automation (ICRA)},
+  pages={4051--4058},
+  year={2020},
+  organization={IEEE}
+}
+```
+
 **Additional resources:**
 
-- Talk describing the paper delivered virtually at ICRA 2020.
-
-    [ ICRA2020_presentation_v9_recording.m4v]( relation_rl/ICRA2020_presentation_v9_recording.m4v)
-
-- Project Slides
-
-    [ICRA2020 Slides]( ICRA2020_presentation_v9_no_presenter.pdf)
-
+- [Talk describing the paper delivered virtually at ICRA 2020](relation_rl/ICRA2020_presentation_v9_recording.m4v)
+- [Project Slides](ICRA2020_presentation_v9_no_presenter.pdf)
 - [Project Page](https://richardrl.github.io/relational-rl/)
 - [Github](https://github.com/richardrl/rlkit-relational)
 

@@ -13,6 +13,7 @@ export const Figure = styled.figure`
   flex-direction: column;
   justify-items: center;
   ${({width}) => width ? `width: ${width};` : ''}
+  ${({maxWidth}) => maxWidth ? `max-width: ${maxWidth};` : ''}
   ${({gap}) => gap ? `gap: ${gap};` : ''}
   
   img {
@@ -31,13 +32,14 @@ export const Spacer = styled.div`
   flex: auto;
 `;
 
+//Ge - currently not being used.
 export const Image = ({
                          src, alt, title, caption, align = "center",
-                         width, gap, ...props
+                         ...props
                        }) => (
-    <Figure className="figure-container" width={width} gap={gap}>
+    <Figure className="figure-container" {...props}>
       {title ? <h3>{title}</h3> : null}
-      <img src={src} {...props}/>
+      <img src={src} />
       {caption
           ? <figcaption className="caption">{caption}</figcaption>
           : null}
