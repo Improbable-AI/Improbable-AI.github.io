@@ -142,9 +142,10 @@ While we are able to stack towers with cubes, there is a lot still to be done! W
     - **Sample-efficient RL over raw observations**: Training RL over raw observations can be prohibitively [expensive](https://arxiv.org/abs/2101.04882), requiring hundreds of GPUs. One option is to pre-train on some other task to learn an efficient shape representation and finetune on the object manipulation task. The choice of pre-training task and how to finetune in the RL setup are [open](https://arxiv.org/pdf/1906.11883.pdf) [research](https://arxiv.org/pdf/1903.06684.pdf) [questions](https://arxiv.org/pdf/1910.11977.pdf). It is therefore important to come up with new representations or training strategies that can significantly speed up RL training over raw observations.
     - **Automatic curriculum design**: The main task variation we tackled in this work was object cardinality. Smaller numbers of objects were easier to train than larger numbers of objects, and we used this principle to design our curriculum. But what if our task variation involved something more complicated, such as the object shape? It is unclear *a priori* what shapes are easier to stack than other shapes, which means we won't be able to make a simple hand-designed curriculum. Instead, we may need to look into techniques for [automatically](https://arxiv.org/abs/1707.05300) [generating](https://arxiv.org/abs/1707.00183) [curricula](https://arxiv.org/abs/2101.04882).
 
-**This post is based on the following paper:**
+**This post is based on the following paper published in ICRA 2020:**
 
-- [Towards Practical Multi-Object Manipulation using Relational Reinforcement Learning](https://arxiv.org/pdf/1912.11032.pdf) by Richard Li, Allan Jabri, Trevor Darrell, and Pulkit Agrawal
+- [Towards Practical Multi-Object Manipulation using Relational Reinforcement Learning](https://arxiv.org/pdf/1912.11032.pdf) <br />
+by Richard Li, Allan Jabri, Trevor Darrell, and Pulkit Agrawal
 
 **Bibtex:**
 
@@ -168,7 +169,7 @@ While we are able to stack towers with cubes, there is a lot still to be done! W
 
 **Acknowledgements:**
 
-Thanks to Andi Peng, Tao Chen, Anthony Simeonov, and Ge Yang for giving feedback and reading earlier drafts of this blog post.
+Thanks to Andi Peng, Tao Chen, Anthony Simeonov, and Ge Yang for giving feedback and reading earlier drafts of this blog post. We acknowledge support from US Department of Defense, DARPA’s Machine Common Sense Grant and the BAIR and BDD industrial consortia. We thank Amazon Web Services (AWS) for their generous support in the form of cloud credits.
 
 ## References
 
