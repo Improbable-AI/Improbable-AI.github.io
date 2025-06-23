@@ -447,7 +447,6 @@
         <nav class="nav">
             <div class="nav-item active">Principal Investigator</div>
             <div class="nav-item">Graduate Students</div>
-            <div class="nav-item">Undergraduate Students</div>
         </nav>
 
         <!-- Principal Investigator Section -->
@@ -529,35 +528,6 @@
                 <article class="member-card"><div class="member-photo"><img src="assets/members/seungwook.jpg" alt="Seungwook Han"></div><div class="member-content"><h3 class="member-name">Seungwook Han</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://blackswhan.com" target="_blank" class="member-link">Website</a></div></div></article>
             </div>
         </section>
-
-        <!-- MEng and UROP Section -->
-        <section class="section" id="meng-urops">
-            <div class="section-header">
-                <h2 class="section-title">Masters of Engineering (MEng) & Undergraduate Researchers (UROPs)</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="members-grid">
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Srinath Mahankali</h3><div class="member-role">MEng/UROP</div></div></article>
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Jagdeep Bhatia</h3><div class="member-role">MEng/UROP</div></div></article>
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Arthur Hu</h3><div class="member-role">MEng/UROP</div></div></article>
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Gregory Pylypovych</h3><div class="member-role">MEng/UROP</div></div></article>
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Kevin Garcia</h3><div class="member-role">MEng/UROP</div></div></article>
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Yash Prabhu</h3><div class="member-role">MEng/UROP</div></div></article>
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Locke Cai</h3><div class="member-role">MEng/UROP</div></div></article>
-            </div>
-        </section>
-
-        <!-- Visiting Researchers Section -->
-        <section class="section" id="visiting-researchers">
-            <div class="section-header">
-                <h2 class="section-title">Visiting Researchers</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="members-grid">
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">Visiting Researcher</div></div><div class="member-content"><h3 class="member-name">Sandor Felber</h3><div class="member-role">Visiting Researcher</div></div></article>
-                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">Visiting Researcher</div></div><div class="member-content"><h3 class="member-name">Lars Ankile</h3><div class="member-role">Visiting Researcher</div></div></article>
-            </div>
-        </section>
     </div>
 
     <script>
@@ -570,7 +540,7 @@
                 item.classList.add('active');
                 
                 // Scroll to section
-                const sections = ['pi', 'grad-students', 'undergrad-students'];
+                const sections = ['pi', 'grad-students'];
                 const target = document.getElementById(sections[index]);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -580,7 +550,7 @@
 
         // Update navigation on scroll
         window.addEventListener('scroll', () => {
-            const sections = ['pi', 'grad-students', 'undergrad-students'];
+            const sections = ['pi', 'grad-students'];
             const navItems = document.querySelectorAll('.nav-item');
             
             let current = '';
