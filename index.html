@@ -345,9 +345,24 @@
             pointer-events: none;
             z-index: -1;
         }
+
+        /* Animated Lab Logo Background */
+        #lab-logo-bg-img {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 700px;
+            height: 700px;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.13;
+            filter: blur(0.5px);
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
+    <img id="lab-logo-bg-img" src="assets/lab_logo.png" alt="Lab Logo Background" />
     <div class="lab-nav">
         <a href="https://www.csail.mit.edu/" target="_blank" class="lab-nav-link">CSAIL</a>
     </div>
