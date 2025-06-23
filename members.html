@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Members - Improbable AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 4rem 0;
+            padding: 1rem;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .nav-item {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ffffff;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 8rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-right: 2rem;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #333, transparent);
+        }
+
+        /* Grid */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Member Cards */
+        .member-card {
+            background: #111111;
+            border: 1px solid #1a1a1a;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-width: 260px;
+            margin: 0 auto;
+        }
+
+        .member-card:hover {
+            border-color: #333;
+            transform: translateY(-4px);
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #666, #333);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .member-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .member-photo {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            height: auto;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+        }
+
+        .member-card:hover .member-photo img {
+            transform: scale(1.05);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            position: relative;
+        }
+
+        .photo-placeholder::before {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .photo-placeholder::after {
+            content: '👤';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #666;
+        }
+
+        .member-content {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .member-role {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .member-bio {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        .member-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .member-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .member-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #555;
+            transform: translateY(-1px);
+        }
+
+        .member-link::after {
+            content: '↗';
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .member-link:hover::after {
+            transform: translateX(2px) translateY(-2px);
+        }
+
+        /* PI Special Styling */
+        .member-card.pi {
+            border-color: #555;
+            max-width: 450px;
+            grid-column: span 1;
+        }
+
+        .member-card.pi .member-photo {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            height: auto;
+        }
+
+        .member-card.pi::before {
+            background: linear-gradient(90deg, #888, #555);
+        }
+
+        .member-card.pi .member-role {
+            color: #aaa;
+        }
+
+        /* PI Grid Layout */
+        .members-grid.pi-grid {
+            grid-template-columns: 1fr;
+            justify-items: center;
+        }
+
+        /* Back to main */
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid #333;
+            padding: 0.55rem 1.3rem;
+            font-size: 0.95rem;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            border-radius: 2rem;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #555;
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-line {
+                width: 100%;
+            }
+
+            .back-link {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .member-links {
+                flex-direction: column;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .member-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .member-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .member-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .member-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* For postdoc section, center grid and allow wrapping */
+        #postdocs .members-grid {
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Back to Main</a>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Lab Members</h1>
+            <p>Meet the researchers and students driving innovation in robotics and artificial intelligence at the Improbable AI Lab</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-item active">Principal Investigator</div>
+            <div class="nav-item">Graduate Students</div>
+            <div class="nav-item">Undergraduate Students</div>
+        </nav>
+
+        <!-- Principal Investigator Section -->
+        <section class="section" id="pi">
+            <div class="section-header">
+                <h2 class="section-title">Principal Investigator</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="members-grid pi-grid">
+                <article class="member-card pi">
+                    <div class="member-photo">
+                        <img src="assets/members/pulkit.jpg" alt="Prof. Pulkit Agrawal">
+                    </div>
+                    <div class="member-content">
+                        <h3 class="member-name">Prof. Pulkit Agrawal</h3>
+                        <div class="member-role">Principal Investigator</div>
+                        <p class="member-bio">
+                            Assistant Professor at MIT CSAIL leading research in robotics and artificial intelligence. Focuses on developing intelligent systems that can learn and adapt in complex, real-world environments. Research interests include dexterous manipulation, robot locomotion, and machine learning for robotics.
+                        </p>
+                        <div class="member-links">
+                            <a href="https://people.csail.mit.edu/pulkitag/" target="_blank" class="member-link">Website</a>
+                            <a href="https://scholar.google.com/citations?user=example" target="_blank" class="member-link">Google Scholar</a>
+                            <a href="mailto:pulkitag@csail.mit.edu" class="member-link">Email</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Postdoctoral Researchers Section -->
+        <section class="section" id="postdocs">
+            <div class="section-header">
+                <h2 class="section-title">Postdoctoral Researchers</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="members-grid">
+                <article class="member-card">
+                    <div class="member-photo">
+                        <img src="assets/members/haoshu.jpg" alt="Haoshu Fang">
+                    </div>
+                    <div class="member-content">
+                        <h3 class="member-name">Haoshu Fang</h3>
+                        <div class="member-role">Postdoctoral Researcher</div>
+                        <div class="member-links">
+                            <a href="https://fang-haoshu.github.io/" target="_blank" class="member-link">Website</a>
+                        </div>
+                    </div>
+                </article>
+                <article class="member-card">
+                    <div class="member-photo">
+                        <img src="assets/members/branden.jpg" alt="Branden Romero">
+                    </div>
+                    <div class="member-content">
+                        <h3 class="member-name">Branden Romero</h3>
+                        <div class="member-role">Postdoctoral Researcher</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Graduate Students Section -->
+        <section class="section" id="grad-students">
+            <div class="section-header">
+                <h2 class="section-title">Graduate Students</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="members-grid">
+                <article class="member-card"><div class="member-photo"><img src="assets/members/bronars.jpg" alt="Antonia Bronars"></div><div class="member-content"><h3 class="member-name">Antonia Bronars</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://tonibronars.github.io/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/gabe.jpg" alt="Gabe Margolis"></div><div class="member-content"><h3 class="member-name">Gabe Margolis</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://gmargo11.github.io/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/zhangwei.jpg" alt="Zhang-Wei Hong"></div><div class="member-content"><h3 class="member-name">Zhang-Wei Hong</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://williamd4112.github.io/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/nolan.jpg" alt="Nolan Fey"></div><div class="member-content"><h3 class="member-name">Nolan Fey</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://nolie-rolie.github.io/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/younghyo.jpg" alt="Younghyo Park"></div><div class="member-content"><h3 class="member-name">Younghyo Park</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://younghyopark.me" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/jyo.jpg" alt="Jyothish Pari"></div><div class="member-content"><h3 class="member-name">Jyothish Pari</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://jyopari.github.io" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/idan.jpg" alt="Idan Shenfeld"></div><div class="member-content"><h3 class="member-name">Idan Shenfeld</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://idanshen.github.io/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/aviv.jpg" alt="Aviv Netanyahu"></div><div class="member-content"><h3 class="member-name">Aviv Netanyahu</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://avivne.github.io/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/richard.jpg" alt="Richard Li"></div><div class="member-content"><h3 class="member-name">Richard Li</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://richardrl.github.io/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/martin.jpg" alt="Martin Peticco"></div><div class="member-content"><h3 class="member-name">Martin Peticco</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://mfpeticco.github.io/about.html" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/nitish.jpg" alt="Nitish Dashora"></div><div class="member-content"><h3 class="member-name">Nitish Dashora</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://www.nitishdashora.com/" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/seungwook.jpg" alt="Seungwook Han"></div><div class="member-content"><h3 class="member-name">Seungwook Han</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://blackswhan.com" target="_blank" class="member-link">Website</a></div></div></article>
+            </div>
+        </section>
+
+        <!-- MEng and UROP Section -->
+        <section class="section" id="meng-urops">
+            <div class="section-header">
+                <h2 class="section-title">Masters of Engineering (MEng) & Undergraduate Researchers (UROPs)</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="members-grid">
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Srinath Mahankali</h3><div class="member-role">MEng/UROP</div></div></article>
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Jagdeep Bhatia</h3><div class="member-role">MEng/UROP</div></div></article>
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Arthur Hu</h3><div class="member-role">MEng/UROP</div></div></article>
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Gregory Pylypovych</h3><div class="member-role">MEng/UROP</div></div></article>
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Kevin Garcia</h3><div class="member-role">MEng/UROP</div></div></article>
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Yash Prabhu</h3><div class="member-role">MEng/UROP</div></div></article>
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">MEng/UROP</div></div><div class="member-content"><h3 class="member-name">Locke Cai</h3><div class="member-role">MEng/UROP</div></div></article>
+            </div>
+        </section>
+
+        <!-- Visiting Researchers Section -->
+        <section class="section" id="visiting-researchers">
+            <div class="section-header">
+                <h2 class="section-title">Visiting Researchers</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="members-grid">
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">Visiting Researcher</div></div><div class="member-content"><h3 class="member-name">Sandor Felber</h3><div class="member-role">Visiting Researcher</div></div></article>
+                <article class="member-card"><div class="member-photo"><div class="photo-placeholder">Visiting Researcher</div></div><div class="member-content"><h3 class="member-name">Lars Ankile</h3><div class="member-role">Visiting Researcher</div></div></article>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Smooth scroll navigation
+        document.querySelectorAll('.nav-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                // Add active class to clicked item
+                item.classList.add('active');
+                
+                // Scroll to section
+                const sections = ['pi', 'grad-students', 'undergrad-students'];
+                const target = document.getElementById(sections[index]);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Update navigation on scroll
+        window.addEventListener('scroll', () => {
+            const sections = ['pi', 'grad-students', 'undergrad-students'];
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        current = section;
+                    }
+                }
+            });
+            
+            navItems.forEach((item, index) => {
+                item.classList.remove('active');
+                if (sections[index] === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.member-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html> 

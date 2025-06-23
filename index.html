@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improbable AI Research Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+        }
+
+        .header h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: #aaa;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .lab-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .lab-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .lab-info-item::before {
+            content: '•';
+            color: #555;
+        }
+
+        .lab-info-item:first-child::before {
+            display: none;
+        }
+
+        /* Research Areas Grid */
+        .research-areas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin: 6rem 0;
+        }
+
+        .research-area-card {
+            background: #111111;
+            border: 1px solid #1a1a1a;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .research-area-card:hover {
+            border-color: #333;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .research-area-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #666, #333);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .research-area-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .area-media {
+            height: 250px;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .area-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .research-area-card:hover .area-media img {
+            transform: scale(1.05);
+        }
+
+        .area-content {
+            padding: 2.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .area-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .area-description {
+            color: #aaa;
+            font-size: 1rem;
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            flex: 1;
+        }
+
+        .area-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .area-features li {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .area-features li::before {
+            content: '→';
+            color: #555;
+            font-weight: bold;
+        }
+
+        .area-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-top: auto;
+            justify-content: center;
+        }
+
+        .area-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #555;
+            transform: translateY(-2px);
+        }
+
+        .area-button::after {
+            content: '→';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .area-button:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* Top-right lab nav */
+        .lab-nav {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .lab-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid #333;
+            padding: 0.55rem 1.3rem;
+            font-size: 0.95rem;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            border-radius: 2rem;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+        }
+        
+        .lab-nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #555;
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+        }
+        
+        .lab-nav-link::after {
+            content: '↗';
+            font-size: 1.1em;
+            margin-left: 0.3em;
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .research-areas {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .lab-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .lab-info-item::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .lab-nav {
+                top: 1rem;
+                right: 1rem;
+                flex-direction: column;
+            }
+            
+            .lab-nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .research-area-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .research-area-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .research-area-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="lab-nav">
+        <a href="https://people.csail.mit.edu/pulkitag/" target="_blank" class="lab-nav-link">Lab Website</a>
+        <a href="https://www.csail.mit.edu/" target="_blank" class="lab-nav-link">CSAIL</a>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Improbable AI Research Lab</h1>
+            <p>Advancing the frontiers of robotics and artificial intelligence through innovative research in locomotion, manipulation, and machine learning. We develop cutting-edge technologies that push the boundaries of what robots can achieve in complex, real-world environments.</p>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="members.html" class="area-button" style="display: inline-flex; margin: 0;">
+                    Meet Our Team
+                </a>
+            </div>
+        </header>
+
+        <!-- Research Areas -->
+        <div class="research-areas">
+            <article class="research-area-card">
+                <div class="area-content">
+                    <h2 class="area-title">Robot Locomotion</h2>
+                    <p class="area-description">
+                        Developing advanced locomotion systems that enable robots to navigate complex, unstructured environments with human-like agility and efficiency. Our research spans legged robotics, dynamic walking, and adaptive locomotion strategies.
+                    </p>
+                    <ul class="area-features">
+                        <li>Legged robotics and dynamic walking</li>
+                        <li>Terrain adaptation and navigation</li>
+                        <li>Energy-efficient locomotion</li>
+                        <li>Multi-modal mobility systems</li>
+                    </ul>
+                    <a href="locomotion.html" class="area-button">Explore Research</a>
+                </div>
+            </article>
+
+            <article class="research-area-card">
+                <div class="area-content">
+                    <h2 class="area-title">Robot Manipulation</h2>
+                    <p class="area-description">
+                        Pioneering dexterous manipulation capabilities that enable robots to interact with objects and environments with human-like precision and adaptability. Our work encompasses hardware design, control systems, and learning algorithms.
+                    </p>
+                    <ul class="area-features">
+                        <li>Dexterous hand design and control</li>
+                        <li>Tactile sensing and feedback</li>
+                        <li>In-hand manipulation</li>
+                        <li>Human-robot interaction</li>
+                    </ul>
+                    <a href="dexterity.html" class="area-button">Explore Research</a>
+                </div>
+            </article>
+
+            <article class="research-area-card">
+                <div class="area-content">
+                    <h2 class="area-title">General Machine Learning</h2>
+                    <p class="area-description">
+                        Advancing fundamental machine learning algorithms and methodologies that drive innovation across robotics and AI. Our research focuses on developing robust, efficient, and interpretable learning systems.
+                    </p>
+                    <ul class="area-features">
+                        <li>Reinforcement learning algorithms</li>
+                        <li>Multi-modal learning</li>
+                        <li>Transfer learning and adaptation</li>
+                        <li>Robust and interpretable AI</li>
+                    </ul>
+                    <a href="ml.html" class="area-button">Explore Research</a>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.research-area-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

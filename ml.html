@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Machine Learning Research - Improbable AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 4rem 0;
+            padding: 1rem;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .nav-item {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ffffff;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 8rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-right: 2rem;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #333, transparent);
+        }
+
+        /* Grid */
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .research-card {
+            background: #111111;
+            border: 1px solid #1a1a1a;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .research-card:hover {
+            border-color: #333;
+            transform: translateY(-4px);
+        }
+
+        .research-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #666, #333);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .research-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .card-media {
+            height: 288px;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .media-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            position: relative;
+        }
+
+        .media-placeholder::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .media-placeholder::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 52%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .card-abstract {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-top: 1.5rem;
+        }
+
+        .card-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #555;
+            transform: translateY(-1px);
+        }
+
+        .card-button::after {
+            content: '→';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card-button:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* Back to main */
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid #333;
+            padding: 0.55rem 1.3rem;
+            font-size: 0.95rem;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            border-radius: 2rem;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #555;
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .research-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-line {
+                width: 100%;
+            }
+
+            .back-link {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .research-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .research-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .research-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Back to Main</a>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>General Machine Learning Research</h1>
+            <p>Advancing fundamental machine learning algorithms and methodologies that drive innovation across robotics and artificial intelligence</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-item active">Reinforcement Learning</div>
+            <div class="nav-item">Multi-Modal Learning</div>
+            <div class="nav-item">Robust AI</div>
+        </nav>
+
+        <!-- Reinforcement Learning Section -->
+        <section class="section" id="reinforcement-learning">
+            <div class="section-header">
+                <h2 class="section-title">Reinforcement Learning</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="research-grid">
+                <article class="research-card">
+                    <div class="card-tag">Reinforcement Learning</div>
+                    <div class="card-media">
+                        <div class="media-placeholder">
+                            Policy Optimization<br>Algorithms
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Advanced Policy Optimization</h3>
+                        <p class="card-abstract">
+                            Novel reinforcement learning algorithms that improve sample efficiency, stability, and performance across complex robotic tasks. Our research focuses on developing robust policy optimization methods that can handle high-dimensional state and action spaces.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="research-card">
+                    <div class="card-tag">Reinforcement Learning</div>
+                    <div class="card-media">
+                        <div class="media-placeholder">
+                            Hierarchical<br>Learning
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Hierarchical Learning</h3>
+                        <p class="card-abstract">
+                            Multi-level learning frameworks that decompose complex tasks into manageable subtasks. Our hierarchical approaches enable robots to learn long-horizon behaviors more efficiently and transfer skills across different domains.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Multi-Modal Learning Section -->
+        <section class="section" id="multi-modal-learning">
+            <div class="section-header">
+                <h2 class="section-title">Multi-Modal Learning</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="research-grid">
+                <article class="research-card">
+                    <div class="card-tag">Multi-Modal Learning</div>
+                    <div class="card-media">
+                        <div class="media-placeholder">
+                            Vision-Language<br>Integration
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Vision-Language Models</h3>
+                        <p class="card-abstract">
+                            Advanced models that integrate visual and linguistic information for enhanced robotic understanding and interaction. Our research enables robots to interpret complex visual scenes and follow natural language instructions.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="research-card">
+                    <div class="card-tag">Multi-Modal Learning</div>
+                    <div class="card-media">
+                        <div class="media-placeholder">
+                            Sensor Fusion<br>Algorithms
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Sensor Fusion</h3>
+                        <p class="card-abstract">
+                            Intelligent algorithms that combine information from multiple sensors including vision, tactile, proprioceptive, and auditory systems. Our fusion methods enable robust perception and decision-making in complex environments.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Robust AI Section -->
+        <section class="section" id="robust-ai">
+            <div class="section-header">
+                <h2 class="section-title">Robust AI</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="research-grid">
+                <article class="research-card">
+                    <div class="card-tag">Robust AI</div>
+                    <div class="card-media">
+                        <div class="media-placeholder">
+                            Uncertainty<br>Quantification
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Uncertainty Quantification</h3>
+                        <p class="card-abstract">
+                            Methods for quantifying and managing uncertainty in machine learning models. Our research focuses on developing reliable AI systems that can assess their own confidence and make safe decisions in uncertain environments.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="research-card">
+                    <div class="card-tag">Robust AI</div>
+                    <div class="card-media">
+                        <div class="media-placeholder">
+                            Interpretable<br>AI Systems
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Interpretable AI</h3>
+                        <p class="card-abstract">
+                            Developing transparent and interpretable AI systems that can explain their decisions and reasoning processes. Our work enables better human-AI collaboration and builds trust in autonomous systems.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Smooth scroll navigation
+        document.querySelectorAll('.nav-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                // Add active class to clicked item
+                item.classList.add('active');
+                
+                // Scroll to section
+                const sections = ['reinforcement-learning', 'multi-modal-learning', 'robust-ai'];
+                const target = document.getElementById(sections[index]);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Update navigation on scroll
+        window.addEventListener('scroll', () => {
+            const sections = ['reinforcement-learning', 'multi-modal-learning', 'robust-ai'];
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        current = section;
+                    }
+                }
+            });
+            
+            navItems.forEach((item, index) => {
+                item.classList.remove('active');
+                if (sections[index] === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.research-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html> 
