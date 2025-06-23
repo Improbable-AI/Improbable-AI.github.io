@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improbable AI Lab Branding & Assets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .header {
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+        }
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+        .header p {
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .logo-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 4rem;
+            margin-bottom: 2.5rem;
+        }
+        @media (max-width: 900px) {
+            .logo-section {
+                flex-direction: column;
+                align-items: center;
+                gap: 2.5rem;
+            }
+        }
+        .logo-img {
+            width: 260px;
+            height: auto;
+            margin-bottom: 1.2rem;
+            /* background: #fff; */
+            border-radius: 2rem;
+            box-shadow: 0 4px 32px 0 rgba(0,0,0,0.10);
+            padding: 1.5rem;
+        }
+        .download-links {
+            margin-bottom: 2.5rem;
+            display: flex;
+            gap: 1.2rem;
+        }
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+        }
+        .card-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #555;
+            transform: translateY(-1px);
+        }
+        .card-button::after {
+            content: '→';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .card-button:hover::after {
+            transform: translateX(3px);
+        }
+        .explanation {
+            color: #e5e5e5;
+            font-size: 1.08rem;
+            line-height: 1.7;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        .color-row {
+            display: flex;
+            align-items: center;
+            margin-top: 1.5rem;
+            gap: 2.5rem;
+        }
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-right: 0.7rem;
+            border: 2px solid #222;
+        }
+        .color-label {
+            font-size: 1.05rem;
+            color: #fff;
+        }
+        /* Top-right lab nav */
+        .lab-nav {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+        .lab-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid #333;
+            padding: 0.55rem 1.3rem;
+            font-size: 0.95rem;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            border-radius: 2rem;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+        }
+        .lab-nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #555;
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+        }
+        .lab-nav-link::after {
+            content: '↗';
+            font-size: 1.1em;
+            margin-left: 0.3em;
+            opacity: 0.7;
+        }
+        /* Back to main */
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid #333;
+            padding: 0.55rem 1.3rem;
+            font-size: 0.95rem;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            border-radius: 2rem;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+        }
+        .back-link:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #555;
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+        }
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            .lab-nav {
+                top: 1rem;
+                right: 1rem;
+                flex-direction: column;
+            }
+            .back-link {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            .explanation { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Back to Main</a>
+    <div class="lab-nav">
+        <a href="https://www.csail.mit.edu/" target="_blank" class="lab-nav-link">CSAIL</a>
+        <a href="branding.html" class="lab-nav-link">Branding</a>
+    </div>
+    <div class="container">
+        <header class="header">
+            <h1>Improbable AI Lab Branding & Assets</h1>
+            <p>Download official lab logos and learn about our visual identity</p>
+        </header>
+        <div class="logo-section">
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem;">
+                <img src="assets/lab_logo.png" alt="Improbable AI Lab Logo" class="logo-img" />
+                <div class="download-links">
+                    <a href="assets/lab_logo.png" download class="card-button">Download PNG</a>
+                </div>
+                <!-- <div style="color:#aaa; font-size:1rem; margin-bottom:2.5rem;">Original Logo</div> -->
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem;">
+                <img src="assets/lab_logo_inverted.png" alt="Improbable AI Lab Logo (Inverted)" class="logo-img" style="background: none;" />
+                <div class="download-links">
+                    <a href="assets/lab_logo_inverted.png" download class="card-button">Download PNG</a>
+                </div>
+                <!-- <div style="color:#aaa; font-size:1rem;">Inverted Logo</div> -->
+            </div>
+        </div>
+        <div class="explanation">
+            <strong>Logo Design:</strong><br>
+            Our logo is a stylized, open triangle with rounded corners and a dot, representing the letter "A" for "AI" and evoking a sense of motion, creativity, and approachability. The open form symbolizes openness to new ideas and collaboration, while the dot adds a playful, human touch.<br><br>
+            <strong>Color Scheme:</strong><br>
+            The gradient transitions from vibrant pink (<span style="color:#ff5ecb;">#ff5ecb</span>) to electric blue (<span style="color:#5ecbff;">#5ecbff</span>), reflecting the lab's energy, innovation, and forward-thinking spirit. These colors are used throughout our branding to create a modern, dynamic, and inclusive visual identity.
+            <div class="color-row">
+                <div class="color-swatch" style="background: #ff5ecb;"></div>
+                <span class="color-label">Pink: #ff5ecb</span>
+                <div class="color-swatch" style="background: #5ecbff;"></div>
+                <span class="color-label">Blue: #5ecbff</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
