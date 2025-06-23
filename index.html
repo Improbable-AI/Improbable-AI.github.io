@@ -267,6 +267,38 @@
             opacity: 0.7;
         }
 
+        /* Footer */
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-branding {
+            color: #888;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-branding:hover {
+            color: #fff;
+        }
+
+        .footer-copyright {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -285,6 +317,11 @@
 
             .lab-info-item::before {
                 display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
 
@@ -365,7 +402,6 @@
     <img id="lab-logo-bg-img" src="assets/lab_logo.png" alt="Lab Logo Background" />
     <div class="lab-nav">
         <a href="https://www.csail.mit.edu/" target="_blank" class="lab-nav-link">CSAIL</a>
-        <a href="branding.html" class="lab-nav-link">Branding</a>
     </div>
     
     <div class="container">
@@ -432,6 +468,13 @@
                     <a href="ml.html" class="area-button">Explore Research</a>
                 </div>
             </article>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+            <a href="branding.html" class="footer-branding">Branding</a>
+            <span class="footer-copyright">&copy; 2025 Younghyo Park. All Rights Reserved.</span>
         </div>
     </div>
 

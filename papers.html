@@ -97,8 +97,8 @@
         }
 
         .paper-thumbnail {
-            width: 200px;
-            min-width: 200px;
+            width: 340px;
+            min-width: 340px;
             background: #0a0a0a;
             position: relative;
             overflow: hidden;
@@ -171,11 +171,34 @@
             line-height: 1.3;
         }
 
+        .paper-title a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .paper-title a:hover {
+            color: #4da3ff; /* or any accent color you prefer */
+            text-decoration: underline;
+        }
+
         .paper-authors {
             color: #888;
             font-size: 0.9rem;
             margin-bottom: 1rem;
             font-weight: 400;
+        }
+
+        .paper-authors a {
+            color: #888;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .paper-authors a:hover {
+            color: #fff;
+            text-decoration: underline;
         }
 
         .paper-abstract {
@@ -334,6 +357,7 @@
 
             .paper-thumbnail {
                 width: 100%;
+                min-width: 0;
                 height: 200px;
                 border-right: none;
                 border-bottom: 1px solid #1a1a1a;
@@ -437,148 +461,39 @@
         </header>
 
         <!-- Papers List -->
-        <div class="papers-list">
-            <!-- Paper 1 -->
-            <article class="paper-card">
-                <div class="paper-thumbnail">
-                    <img src="assets/papers/eyesight-thumb.jpg" alt="EyeSight Hand Paper">
-                </div>
-                <div class="paper-content">
-                    <h3 class="paper-title">EyeSight: A Vision-Based Tactile Sensor for Enhanced Dexterous Manipulation</h3>
-                    <div class="paper-authors">Haoshu Fang, Gabe Margolis, Pulkit Agrawal</div>
-                    <p class="paper-abstract">
-                        We present EyeSight, a novel 7-DoF humanoid hand with integrated vision-based tactile sensors for enhanced whole-hand manipulation. The system features quasi-direct drive actuation for human-like strength and speed, evaluated on challenging tasks including bottle opening, plasticine cutting, and plate manipulation. Results demonstrate that tactile feedback dramatically improves task success rates, highlighting the critical role of tactile information in dexterous manipulation.
-                    </p>
-                    <div class="paper-meta">
-                        <span class="paper-date">December 2024</span>
-                        <span class="paper-venue">Science Robotics</span>
-                    </div>
-                    <div class="paper-links">
-                        <a href="https://eyesighthand.github.io/" target="_blank" class="paper-link">Project Website</a>
-                        <a href="#" target="_blank" class="paper-link">Paper PDF</a>
-                        <a href="#" target="_blank" class="paper-link">Code</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Paper 2 -->
-            <article class="paper-card">
-                <div class="paper-thumbnail">
-                    <img src="assets/papers/dexwrist-thumb.jpg" alt="DexWrist Paper">
-                </div>
-                <div class="paper-content">
-                    <h3 class="paper-title">DexWrist: A Compliant Robotic Wrist for Enhanced Manipulation and Policy Learning</h3>
-                    <div class="paper-authors">Zhang-Wei Hong, Nolan Fey, Pulkit Agrawal</div>
-                    <p class="paper-abstract">
-                        DexWrist is a compliant robotic wrist designed to advance manipulation in constrained environments and accelerate policy learning. The system achieves human wrist-like capabilities with mechanical compliance and expanded workspace, supercharging policy learning through faster teleoperation, shorter task completion, torque transparency for simulation, and enhanced workspace for cluttered scenes.
-                    </p>
-                    <div class="paper-meta">
-                        <span class="paper-date">November 2024</span>
-                        <span class="paper-venue">ICRA 2024</span>
-                    </div>
-                    <div class="paper-links">
-                        <a href="http://dexwrist.csail.mit.edu/" target="_blank" class="paper-link">Project Website</a>
-                        <a href="#" target="_blank" class="paper-link">Paper PDF</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Paper 3 -->
-            <article class="paper-card">
-                <div class="paper-thumbnail">
-                    <img src="assets/papers/dexo-thumb.jpg" alt="DEXO Paper">
-                </div>
-                <div class="paper-content">
-                    <h3 class="paper-title">DEXO: A Hand Exoskeleton for Teaching Robots Dexterous Manipulation In-The-Wild</h3>
-                    <div class="paper-authors">Younghyo Park, Idan Shenfeld, Pulkit Agrawal</div>
-                    <p class="paper-abstract">
-                        DEXO is a novel hand exoskeleton system designed to teach robots dexterous manipulation in-the-wild through natural and intuitive control. The system enables kinematic mirroring and force transparency, allowing human users to directly control a robot's dexterous hand with integrated tactile sensors. The passive exoskeleton design captures high-fidelity interaction data for learning complex tasks.
-                    </p>
-                    <div class="paper-meta">
-                        <span class="paper-date">October 2024</span>
-                        <span class="paper-venue">NeurIPS 2024</span>
-                    </div>
-                    <div class="paper-links">
-                        <a href="#" target="_blank" class="paper-link">Paper PDF</a>
-                        <a href="#" target="_blank" class="paper-link">Code</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Paper 4 -->
-            <article class="paper-card">
-                <div class="paper-thumbnail">
-                    <img src="assets/papers/dart-thumb.jpg" alt="DART Paper">
-                </div>
-                <div class="paper-content">
-                    <h3 class="paper-title">DART: Crowdsourcing Robotic Data Collection Through Cloud-Based Simulation and AR</h3>
-                    <div class="paper-authors">Antonia Bronars, Aviv Netanyahu, Pulkit Agrawal</div>
-                    <p class="paper-abstract">
-                        DART is a teleoperation platform designed for crowdsourcing robotic data collection through cloud-based simulation and augmented reality (AR). The system addresses scalability limitations of real-world data collection by enabling higher throughput and lower physical fatigue compared to traditional teleoperation. Policies trained on DART-collected datasets successfully transfer to reality and are robust to visual disturbances.
-                    </p>
-                    <div class="paper-meta">
-                        <span class="paper-date">September 2024</span>
-                        <span class="paper-venue">CoRL 2024</span>
-                    </div>
-                    <div class="paper-links">
-                        <a href="https://dexhub.ai/project" target="_blank" class="paper-link">Project Website</a>
-                        <a href="#" target="_blank" class="paper-link">Paper PDF</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Paper 5 -->
-            <article class="paper-card">
-                <div class="paper-thumbnail">
-                    <div class="thumbnail-placeholder">
-                        Residual PPO<br>Training Results
-                    </div>
-                </div>
-                <div class="paper-content">
-                    <h3 class="paper-title">Residual PPO: Enhanced Robotic Control Through Residual Learning Architectures</h3>
-                    <div class="paper-authors">Jyothish Pari, Richard Li, Pulkit Agrawal</div>
-                    <p class="paper-abstract">
-                        We present Residual PPO, a novel reinforcement learning approach that combines Proximal Policy Optimization with residual learning architectures for enhanced robotic control. This method enables robots to learn complex manipulation skills more efficiently by building upon existing control policies and refining them through experience. Demonstrates superior performance in dexterous manipulation tasks with faster convergence.
-                    </p>
-                    <div class="paper-meta">
-                        <span class="paper-date">August 2024</span>
-                        <span class="paper-venue">ICML 2024</span>
-                    </div>
-                    <div class="paper-links">
-                        <a href="#" target="_blank" class="paper-link">Paper PDF</a>
-                        <a href="#" target="_blank" class="paper-link">Code</a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Paper 6 -->
-            <article class="paper-card">
-                <div class="paper-thumbnail">
-                    <div class="thumbnail-placeholder">
-                        In-hand Reorientation<br>Demonstration
-                    </div>
-                </div>
-                <div class="paper-content">
-                    <h3 class="paper-title">Advanced In-Hand Object Reorientation Through Tactile Feedback and Predictive Modeling</h3>
-                    <div class="paper-authors">Martin Peticco, Nitish Dashora, Pulkit Agrawal</div>
-                    <p class="paper-abstract">
-                        We present advanced control algorithms for in-hand object reorientation, enabling robots to manipulate objects within their grasp without dropping them. The research focuses on developing robust control strategies that can handle complex object geometries and dynamic reorientation tasks. The system combines tactile feedback, visual perception, and predictive modeling to achieve smooth and precise in-hand manipulation.
-                    </p>
-                    <div class="paper-meta">
-                        <span class="paper-date">July 2024</span>
-                        <span class="paper-venue">RSS 2024</span>
-                    </div>
-                    <div class="paper-links">
-                        <a href="#" target="_blank" class="paper-link">Paper PDF</a>
-                        <a href="#" target="_blank" class="paper-link">Code</a>
-                    </div>
-                </div>
-            </article>
+        <div class="papers-list" id="papers-container">
+            <!-- Content will be loaded from sample.html -->
         </div>
     </div>
 
     <script>
-        // Intersection Observer for fade-in animations
+        // Load content from sample.html
+        fetch('sample.html')
+            .then(response => response.text())
+            .then(content => {
+                document.getElementById('papers-container').innerHTML = content;
+                
+                // Re-initialize intersection observer after content is loaded
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.paper-card').forEach(card => {
+                    observer.observe(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading sample.html:', error);
+                document.getElementById('papers-container').innerHTML = 
+                    '<p style="color: #888; text-align: center; padding: 2rem;">Error loading papers. Please ensure sample.html exists.</p>';
+            });
+
+        // Original intersection observer (will be re-initialized after content loads)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

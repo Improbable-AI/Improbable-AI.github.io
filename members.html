@@ -431,6 +431,125 @@
         #postdocs .members-grid {
             justify-content: center;
         }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: #111111;
+            border: 1px solid #1a1a1a;
+            border-radius: 2rem;
+            margin: 7% auto;
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            width: 90%;
+            max-width: 540px;
+            position: relative;
+            box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #fff;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 2.2rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+            border: none;
+            background: none;
+            padding: 0 0.2em;
+        }
+
+        .close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            color: #e5e5e5;
+            font-size: 1.13rem;
+            line-height: 1.8;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body p {
+            margin-bottom: 1.3rem;
+        }
+
+        .modal-body strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .join-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #555;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.95rem;
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+
+        .join-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #777;
+            transform: translateY(-2px);
+        }
+
+        .join-button::after {
+            content: '→';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .join-button:hover::after {
+            transform: translateX(3px);
+        }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+                border-radius: 1.2rem;
+            }
+            .modal-title {
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -441,6 +560,9 @@
         <header class="header">
             <h1>Lab Members</h1>
             <p>Meet the researchers and students driving innovation in robotics and artificial intelligence at the Improbable AI Lab</p>
+            <div style="margin-top: 2rem;">
+                <button class="join-button" onclick="openModal()">Want to Join?</button>
+            </div>
         </header>
 
         <!-- Navigation -->
@@ -528,7 +650,48 @@
         </section>
     </div>
 
+    <!-- Modal -->
+    <div id="joinModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Join Our Lab</div>
+                <button class="close" onclick="closeModal()" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>We have openings for <strong>Ph.D. Students</strong>, <strong>PostDocs</strong>, and <strong>MIT UROPs/SuperUROPs</strong>.</p>
+                <p>If you would like to apply for the Ph.D. program, please apply directly to <strong>MIT EECS admissions</strong>.</p>
+                <p>For all other positions, send me an e-mail with your resume.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Modal functions
+        function openModal() {
+            document.getElementById('joinModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('joinModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('joinModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
         // Smooth scroll navigation
         document.querySelectorAll('.nav-item').forEach((item, index) => {
             item.addEventListener('click', () => {
