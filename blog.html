@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Blog - Improbable AI Research Lab</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 4rem 0 3rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #aaa;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid #333;
+            padding: 0.55rem 1.3rem;
+            font-size: 0.95rem;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            border-radius: 2rem;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #555;
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        .nav-link::before {
+            content: '←';
+            font-size: 1.1em;
+            margin-right: 0.3em;
+            opacity: 0.7;
+        }
+
+        /* Tag Filter */
+        .tag-filter {
+            margin: 3rem 0 2rem;
+            text-align: center;
+        }
+
+        .tag-filter h3 {
+            color: #ccc;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .tag-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tag-button {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #2a2a2a;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tag-button:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #444;
+            color: #ccc;
+        }
+
+        .tag-button.active {
+            background: rgba(255,255,255,0.15);
+            border-color: #666;
+            color: #fff;
+        }
+
+        /* Blog Posts Grid */
+        .blog-posts {
+            display: grid;
+            gap: 3rem;
+            margin: 4rem 0;
+        }
+
+        .post-card {
+            background: #111111;
+            border: 1px solid #1a1a1a;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .post-card:hover {
+            border-color: #333;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .post-card.featured {
+            border-color: #2a2a2a;
+        }
+
+        .post-card.featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #666, #333);
+        }
+
+        .post-content {
+            padding: 2.5rem;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .post-date {
+            color: #888;
+        }
+
+        .post-author {
+            color: #aaa;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .post-tag {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #2a2a2a;
+            padding: 0.2rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .post-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        .post-excerpt {
+            color: #aaa;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #fff;
+            transform: translateX(3px);
+        }
+
+        .read-more::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .read-more:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* Individual Post Page */
+        .post-page {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .post-page.active {
+            display: block;
+        }
+
+        .post-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .post-back:hover {
+            color: #fff;
+        }
+
+        .post-back::before {
+            content: '←';
+            font-size: 1.1em;
+        }
+
+        .post-full {
+            background: #111111;
+            border: 1px solid #1a1a1a;
+            padding: 3rem;
+            margin-top: 1rem;
+        }
+
+        .post-full h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .post-full h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 2rem 0 1rem;
+            line-height: 1.3;
+        }
+
+        .post-full h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .post-full p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .post-full ul, .post-full ol {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .post-full li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .post-full strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .post-full em {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .post-full a {
+            color: #888;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .post-full a:hover {
+            color: #fff;
+        }
+
+        .post-full hr {
+            border: none;
+            height: 1px;
+            background: #333;
+            margin: 2rem 0;
+        }
+
+        .post-full blockquote {
+            border-left: 3px solid #333;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* Math equations */
+        .katex {
+            color: #ccc;
+        }
+
+        .katex-display {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem 0;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            border-top: 2px solid #666;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* No posts message */
+        .no-posts {
+            text-align: center;
+            padding: 4rem 0;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav {
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .post-full {
+                padding: 2rem;
+            }
+
+            .tag-buttons {
+                gap: 0.5rem;
+            }
+
+            .tag-button {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        pre, code {
+            background: #181818;
+            color: #e5e5e5;
+        }
+        pre {
+            border-radius: 8px;
+            padding: 1.1em 1.3em;
+            margin: 1.5em 0;
+            overflow-x: auto;
+        }
+        code {
+            border-radius: 5px;
+            padding: 0.15em 0.4em;
+            font-size: 0.97em;
+        }
+
+        .post-full img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <div class="nav">
+        <a href="index.html" class="nav-link">Back to Home</a>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1>Research Blog</h1>
+            <p>Latest insights and breakthroughs from the Improbable AI Research Lab. Discover our cutting-edge work in robotics, AI, and machine learning.</p>
+        </header>
+
+        <!-- Tag Filter -->
+        <div class="tag-filter" id="tag-filter">
+            <h3>Filter by Topic</h3>
+            <div class="tag-buttons" id="tag-buttons">
+                <button class="tag-button active" data-tag="all">All Posts</button>
+            </div>
+        </div>
+
+        <!-- Blog Posts Grid -->
+        <div class="blog-posts" id="blog-posts">
+            <div class="loading">Loading posts...</div>
+        </div>
+
+        <!-- Individual Post Page -->
+        <div class="post-page" id="post-page">
+            <a href="#" class="post-back" onclick="showBlogList()">Back to Blog</a>
+            <div class="post-full" id="post-full-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Blog posts configuration
+        const blogPosts = [
+            // {
+            //     file: 'posts/2025-01-15-advancing-robotic-locomotion.md',
+            //     slug: '2025-01-15-advancing-robotic-locomotion'
+            // },
+            // {
+            //     file: 'posts/2025-01-10-dexterous-manipulation-breakthrough.md',
+            //     slug: '2025-01-10-dexterous-manipulation-breakthrough'
+            // },
+            // {
+            //     file: 'posts/2025-01-05-machine-learning-foundations.md',
+            //     slug: '2025-01-05-machine-learning-foundations'
+            // },
+            {
+                file: 'posts/2025-02-01-how-to-write-blog-posts.md',
+                slug: '2025-02-01-how-to-write-blog-posts'
+            }
+        ];
+
+        let postsData = [];
+        let currentFilter = 'all';
+
+        // Parse frontmatter from markdown
+        function parseFrontmatter(content) {
+            const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+            const match = content.match(frontmatterRegex);
+            
+            if (!match) {
+                return { frontmatter: {}, content: content };
+            }
+
+            const frontmatterText = match[1];
+            const markdownContent = match[2];
+            const frontmatter = {};
+
+            frontmatterText.split('\n').forEach(line => {
+                const [key, ...valueParts] = line.split(':');
+                if (key && valueParts.length > 0) {
+                    let value = valueParts.join(':').trim();
+                    // Remove quotes if present
+                    value = value.replace(/^["']|["']$/g, '');
+                    
+                    // Parse arrays (tags)
+                    if (value.startsWith('[') && value.endsWith(']')) {
+                        value = value.slice(1, -1).split(',').map(item => 
+                            item.trim().replace(/^["']|["']$/g, '')
+                        );
+                    }
+                    
+                    // Parse booleans
+                    if (value === 'true') value = true;
+                    if (value === 'false') value = false;
+                    
+                    frontmatter[key.trim()] = value;
+                }
+            });
+
+            return { frontmatter, content: markdownContent };
+        }
+
+        // Load and parse a blog post
+        async function loadPost(postConfig) {
+            try {
+                const response = await fetch(postConfig.file);
+                const text = await response.text();
+                const { frontmatter, content } = parseFrontmatter(text);
+                
+                return {
+                    ...frontmatter,
+                    content,
+                    slug: postConfig.slug,
+                    file: postConfig.file
+                };
+            } catch (error) {
+                console.error(`Error loading post ${postConfig.file}:`, error);
+                return null;
+            }
+        }
+
+        // Get all unique tags from posts
+        function getAllTags(posts) {
+            const tags = new Set();
+            posts.forEach(post => {
+                if (post.tags) {
+                    post.tags.forEach(tag => tags.add(tag));
+                }
+            });
+            return Array.from(tags).sort();
+        }
+
+        // Render tag filter buttons
+        function renderTagFilter(posts) {
+            const tags = getAllTags(posts);
+            const container = document.getElementById('tag-buttons');
+            
+            const buttons = tags.map(tag => 
+                `<button class="tag-button" data-tag="${tag}">${tag}</button>`
+            ).join('');
+            
+            container.innerHTML = `<button class="tag-button active" data-tag="all">All Posts</button>${buttons}`;
+            
+            // Add event listeners
+            container.querySelectorAll('.tag-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tag = button.dataset.tag;
+                    filterPosts(tag);
+                    
+                    // Update active state
+                    container.querySelectorAll('.tag-button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                });
+            });
+        }
+
+        // Filter posts by tag
+        function filterPosts(tag) {
+            currentFilter = tag;
+            const filteredPosts = tag === 'all' 
+                ? postsData 
+                : postsData.filter(post => post.tags && post.tags.includes(tag));
+            
+            renderPosts(filteredPosts);
+        }
+
+        // Render blog posts grid
+        function renderPosts(posts) {
+            const container = document.getElementById('blog-posts');
+            
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="no-posts">
+                        No posts found for the selected filter.
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort posts by date (newest first)
+            const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            container.innerHTML = sortedPosts.map(post => `
+                <article class="post-card ${post.featured ? 'featured' : ''}" onclick="openPost('${post.slug}')">
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">${formatDate(post.date)}</span>
+                            <span class="post-author">${post.author}</span>
+                            ${post.tags ? `
+                                <div class="post-tags">
+                                    ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <h2 class="post-title">${post.title}</h2>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <a href="#" class="read-more" onclick="event.stopPropagation(); openPost('${post.slug}')">
+                            Read Full Article
+                        </a>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Open post in full page
+        function openPost(slug) {
+            const post = postsData.find(p => p.slug === slug);
+            if (!post) return;
+
+            // Update URL without page reload
+            window.history.pushState({ slug }, '', `?post=${slug}`);
+            
+            showPostPage(post);
+        }
+
+        // Show individual post page
+        function showPostPage(post) {
+            const blogList = document.getElementById('blog-posts');
+            const tagFilter = document.getElementById('tag-filter');
+            const postPage = document.getElementById('post-page');
+            const content = document.getElementById('post-full-content');
+            
+            // Hide blog list and tag filter, show post page
+            blogList.style.display = 'none';
+            tagFilter.style.display = 'none';
+            postPage.classList.add('active');
+            
+            // Render markdown content with math support
+            const htmlContent = marked.parse(post.content);
+            
+            content.innerHTML = `
+                <div class="post-meta">
+                    <span class="post-date">${formatDate(post.date)}</span>
+                    <span class="post-author">${post.author}</span>
+                    ${post.tags ? `
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                ${htmlContent}
+            `;
+            
+            // Render math equations
+            renderMathInElement(content, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        // Show blog list
+        function showBlogList() {
+            const blogList = document.getElementById('blog-posts');
+            const tagFilter = document.getElementById('tag-filter');
+            const postPage = document.getElementById('post-page');
+            
+            // Show blog list and tag filter, hide post page
+            blogList.style.display = 'grid';
+            tagFilter.style.display = 'block';
+            postPage.classList.remove('active');
+            
+            // Update URL
+            window.history.pushState({}, '', window.location.pathname);
+            
+            // Re-apply current filter
+            filterPosts(currentFilter);
+        }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.slug) {
+                const post = postsData.find(p => p.slug === event.state.slug);
+                if (post) {
+                    showPostPage(post);
+                }
+            } else {
+                showBlogList();
+            }
+        });
+
+        // Check URL for direct post access
+        function checkUrlForPost() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postSlug = urlParams.get('post');
+            
+            if (postSlug) {
+                const post = postsData.find(p => p.slug === postSlug);
+                if (post) {
+                    showPostPage(post);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Load all posts
+        async function loadAllPosts() {
+            const promises = blogPosts.map(loadPost);
+            const results = await Promise.all(promises);
+            postsData = results.filter(post => post !== null);
+            
+            // Render tag filter
+            renderTagFilter(postsData);
+            
+            // Check if we should show a specific post
+            if (!checkUrlForPost()) {
+                // Show all posts initially
+                renderPosts(postsData);
+            }
+        }
+
+        // Initialize
+        loadAllPosts();
+    </script>
+</body>
+</html> 
