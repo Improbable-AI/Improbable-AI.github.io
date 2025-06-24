@@ -282,10 +282,11 @@
             right: 2rem;
             z-index: 1000;
             display: flex;
-            gap: 1rem;
+            flex-direction: column;
+            align-items: flex-end;
         }
         
-        .lab-nav-link {
+        .lab-nav-toggle {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
@@ -302,6 +303,72 @@
             transition: all 0.3s cubic-bezier(.4,0,.2,1);
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 12px 0 var(--shadow-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .lab-nav-toggle img {
+            height: 22px;
+            width: auto;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 0.4em;
+        }
+        
+        .lab-nav-toggle:hover {
+            background: var(--overlay-hover-strong);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
+            transform: translateY(-2px) scale(1.04);
+        }
+        
+        .lab-nav-toggle::after {
+            content: '↗';
+            font-size: 1.1em;
+            margin-left: 0.3em;
+            opacity: 0.7;
+            transition: transform 0.3s ease;
+        }
+
+        .lab-nav-toggle.expanded::after {
+            transform: rotate(180deg);
+        }
+        
+        .lab-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+        }
+
+        .lab-nav-links.expanded {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        
+        .lab-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--overlay-secondary);
+            border: 1px solid var(--border-primary);
+            padding: 0.45rem 1.1rem;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            border-radius: 1.5rem;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px 0 var(--shadow-secondary);
+            white-space: nowrap;
         }
         
         .lab-nav-link:hover {
@@ -313,7 +380,7 @@
         
         .lab-nav-link::after {
             content: '↗';
-            font-size: 1.1em;
+            font-size: 1em;
             margin-left: 0.3em;
             opacity: 0.7;
         }
@@ -614,7 +681,15 @@
 <body>
     <img id="lab-logo-bg-img" src="assets/lab_logo.png" alt="Lab Logo Background" />
     <div class="lab-nav">
-        <a href="https://www.csail.mit.edu/" target="_blank" class="lab-nav-link">MIT CSAIL</a>
+        <button class="lab-nav-toggle" id="labNavToggle" aria-label="Toggle lab navigation">
+            MIT
+        </button>
+        <div class="lab-nav-links" id="labNavLinks">
+            <a href="https://www.mit.edu/" target="_blank" class="lab-nav-link">MIT</a>
+            <a href="https://www.eecs.mit.edu/" target="_blank" class="lab-nav-link">MIT EECS</a>
+            <a href="https://www.csail.mit.edu/" target="_blank" class="lab-nav-link">MIT CSAIL</a>
+            <a href="https://computing.mit.edu/" target="_blank" class="lab-nav-link">MIT Schwarzman College</a>
+        </div>
     </div>
     
     <!-- Theme Toggle Button -->
@@ -758,6 +833,23 @@
 
         document.querySelectorAll('.research-area-card').forEach(card => {
             observer.observe(card);
+        });
+
+        // Lab navigation functionality
+        const labNavToggle = document.getElementById('labNavToggle');
+        const labNavLinks = document.getElementById('labNavLinks');
+
+        labNavToggle.addEventListener('click', () => {
+            labNavLinks.classList.toggle('expanded');
+            labNavToggle.classList.toggle('expanded');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!labNavToggle.contains(event.target) && !labNavLinks.contains(event.target)) {
+                labNavLinks.classList.remove('expanded');
+                labNavToggle.classList.remove('expanded');
+            }
         });
     </script>
 </body>
