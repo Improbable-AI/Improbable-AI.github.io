@@ -514,6 +514,101 @@
                 text-align: center;
             }
         }
+
+        /* Latest News Section */
+        .latest-news {
+            margin: 2rem 0 4rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-secondary);
+            border-bottom: 1px solid var(--border-secondary);
+        }
+
+        .news-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .news-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .news-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+
+        .news-list {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .news-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item:hover {
+            background: var(--overlay-primary);
+            margin: 0 -1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .news-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            min-width: 60px;
+            transition: color 0.3s ease;
+        }
+
+        .news-content {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            flex: 1;
+            transition: color 0.3s ease;
+        }
+
+        .news-content strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .news-list {
+                max-width: 100%;
+            }
+            
+            .news-item {
+                gap: 0.8rem;
+            }
+            
+            .news-date {
+                min-width: 50px;
+                font-size: 0.75rem;
+            }
+            
+            .news-content {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -545,6 +640,28 @@
                 </a>
             </div>
         </header>
+
+        <!-- Latest News Section -->
+        <div class="latest-news">
+            <div class="news-header">
+                <h2 class="news-title">Latest News</h2>
+                <p class="news-subtitle">Recent updates from the lab</p>
+            </div>
+            <div class="news-list">
+                <div class="news-item">
+                    <span class="news-date">Jan 15</span>
+                    <span class="news-content"><strong>Prof. Agrawal</strong> receives the IIT Kanpur Young Alumnus Award</span>
+                </div>
+                <div class="news-item">
+                    <span class="news-date">Jan 12</span>
+                    <span class="news-content"><strong>Prof. Agrawal</strong> receives 2024 IEEE Early Academic Career Award in Robotics and Automation</span>
+                </div>
+                <!-- <div class="news-item">
+                    <span class="news-date">Jan 10</span>
+                    <span class="news-content"><strong>Meenal Parakh</strong> wins the 2024 Charles and Jennifer Johnson MEng Thesis Award</span>
+                </div> -->
+            </div>
+        </div>
 
         <!-- Research Areas -->
         <div class="research-areas">
