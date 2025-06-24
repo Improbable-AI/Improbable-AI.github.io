@@ -777,6 +777,8 @@
         <nav class="nav">
             <div class="nav-item active">Principal Investigator</div>
             <div class="nav-item">Graduate Students</div>
+            <div class="nav-item">Staff</div>
+            <div class="nav-item">MEng/UROP Students</div>
             <div class="nav-item">Alumni</div>
         </nav>
 
@@ -855,6 +857,63 @@
                 <article class="member-card"><div class="member-photo"><img src="assets/members/martin.jpg" alt="Martin Peticco"></div><div class="member-content"><h3 class="member-name">Martin Peticco</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://mfpeticco.github.io/about.html" target="_blank" class="member-link">Website</a></div></div></article>
                 <article class="member-card"><div class="member-photo"><img src="assets/members/nitish.jpg" alt="Nitish Dashora"></div><div class="member-content"><h3 class="member-name">Nitish Dashora</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://www.nitishdashora.com/" target="_blank" class="member-link">Website</a></div></div></article>
                 <article class="member-card"><div class="member-photo"><img src="assets/members/seungwook.jpg" alt="Seungwook Han"></div><div class="member-content"><h3 class="member-name">Seungwook Han</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://blackswhan.com" target="_blank" class="member-link">Website</a></div></div></article>
+                <article class="member-card"><div class="member-photo"><img src="assets/members/anoop.jpg" alt="Anoop Sonar"></div><div class="member-content"><h3 class="member-name">Anoop Sonar</h3><div class="member-role">Graduate Student</div><div class="member-links"><a href="https://snoopradar.com/about" target="_blank" class="member-link">Website</a></div></div></article>
+            </div>
+        </section>
+
+        <!-- Staff Section -->
+        <section class="section" id="staff">
+            <div class="section-header">
+                <h2 class="section-title">Staff</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="members-grid">
+                <article class="member-card">
+                    <div class="member-photo">
+                        <img src="assets/members/john.jpg" alt="John Marangola">
+                    </div>
+                    <div class="member-content">
+                        <h3 class="member-name">John Marangola</h3>
+                        <div class="member-role">Research Engineer</div>
+                        <div class="member-links">
+                            <a href="https://www.linkedin.com/in/johnmarangola/" target="_blank" class="member-link">LinkedIn</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- MEng/UROP Students Section -->
+        <section class="section" id="meng-urop">
+            <div class="section-header">
+                <h2 class="section-title">MEng/UROP Students</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="members-grid">
+                <article class="member-card">
+                    <div class="member-photo">
+                        <img src="assets/members/michelle.jpg" alt="Michelle Wang">
+                    </div>
+                    <div class="member-content">
+                        <h3 class="member-name">Michelle Wang</h3>
+                        <div class="member-role">MEng/UROP Student</div>
+                        <div class="member-links">
+                            <a href="https://www.linkedin.com/in/mwangjoy/" target="_blank" class="member-link">LinkedIn</a>
+                        </div>
+                    </div>
+                </article>
+                <article class="member-card">
+                    <div class="member-photo">
+                        <img src="assets/members/sunshine.jpg" alt="Sunshine Jiang">
+                    </div>
+                    <div class="member-content">
+                        <h3 class="member-name">Sunshine Jiang</h3>
+                        <div class="member-role">MEng/UROP Student</div>
+                        <div class="member-links">
+                            <a href="https://www.linkedin.com/in/mwangjoy/" target="_blank" class="member-link">LinkedIn</a>
+                        </div>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -1038,7 +1097,7 @@
                 item.classList.add('active');
                 
                 // Scroll to section
-                const sections = ['pi', 'grad-students', 'alumni'];
+                const sections = ['pi', 'grad-students', 'staff', 'meng-urop', 'alumni'];
                 const target = document.getElementById(sections[index]);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1048,7 +1107,7 @@
 
         // Update navigation on scroll
         window.addEventListener('scroll', () => {
-            const sections = ['pi', 'grad-students', 'alumni'];
+            const sections = ['pi', 'grad-students', 'staff', 'meng-urop', 'alumni'];
             const navItems = document.querySelectorAll('.nav-item');
             
             let current = '';
