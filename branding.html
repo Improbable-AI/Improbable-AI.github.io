@@ -10,12 +10,58 @@
             padding: 0;
             box-sizing: border-box;
         }
+
+        :root {
+            /* Dark theme variables */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #e5e5e5;
+            --text-secondary: #aaa;
+            --text-tertiary: #888;
+            --text-muted: #666;
+            --border-primary: #333;
+            --border-secondary: #1a1a1a;
+            --accent-primary: #ffffff;
+            --accent-secondary: #555;
+            --shadow-primary: rgba(0,0,0,0.3);
+            --shadow-secondary: rgba(0,0,0,0.07);
+            --overlay-primary: rgba(255,255,255,0.05);
+            --overlay-secondary: rgba(255,255,255,0.07);
+            --overlay-hover: rgba(255,255,255,0.1);
+            --overlay-hover-strong: rgba(255,255,255,0.15);
+            --grid-color: rgba(255,255,255,0.01);
+        }
+
+        [data-theme="light"] {
+            /* Light theme variables */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --text-tertiary: #6c757d;
+            --text-muted: #adb5bd;
+            --border-primary: #dee2e6;
+            --border-secondary: #e9ecef;
+            --accent-primary: #000000;
+            --accent-secondary: #6c757d;
+            --shadow-primary: rgba(0,0,0,0.1);
+            --shadow-secondary: rgba(0,0,0,0.05);
+            --overlay-primary: rgba(0,0,0,0.05);
+            --overlay-secondary: rgba(0,0,0,0.07);
+            --overlay-hover: rgba(0,0,0,0.1);
+            --overlay-hover-strong: rgba(0,0,0,0.15);
+            --grid-color: rgba(0,0,0,0.02);
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #0a0a0a;
-            color: #e5e5e5;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .container {
             max-width: 1400px;
@@ -34,21 +80,23 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, #333, transparent);
+            background: linear-gradient(90deg, transparent, var(--border-primary), transparent);
         }
         .header h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 300;
-            color: #ffffff;
+            color: var(--text-primary);
             letter-spacing: -0.02em;
             margin-bottom: 1rem;
+            transition: color 0.3s ease;
         }
         .header p {
             font-size: 1.1rem;
-            color: #888;
+            color: var(--text-tertiary);
             font-weight: 300;
             max-width: 600px;
             margin: 0 auto;
+            transition: color 0.3s ease;
         }
         .logo-section {
             display: flex;
@@ -83,11 +131,11 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #333;
+            background: var(--overlay-primary);
+            border: 1px solid var(--border-primary);
             padding: 0.6rem 1.2rem;
             font-size: 0.85rem;
-            color: #ffffff;
+            color: var(--text-primary);
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -97,8 +145,8 @@
             border-radius: 2rem;
         }
         .card-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #555;
+            background: var(--overlay-hover);
+            border-color: var(--accent-secondary);
             transform: translateY(-1px);
         }
         .card-button::after {
@@ -110,7 +158,7 @@
             transform: translateX(3px);
         }
         .explanation {
-            color: #e5e5e5;
+            color: var(--text-primary);
             font-size: 1.08rem;
             line-height: 1.7;
             margin-bottom: 4rem;
@@ -134,7 +182,7 @@
         }
         .color-label {
             font-size: 1.05rem;
-            color: #fff;
+            color: var(--text-primary);
         }
         /* Top-right lab nav */
         .lab-nav {
@@ -149,11 +197,11 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid #333;
+            background: var(--overlay-secondary);
+            border: 1px solid var(--border-primary);
             padding: 0.55rem 1.3rem;
             font-size: 0.95rem;
-            color: #fff;
+            color: var(--text-primary);
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 0.07em;
@@ -161,12 +209,12 @@
             border-radius: 2rem;
             transition: all 0.3s cubic-bezier(.4,0,.2,1);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+            box-shadow: 0 2px 12px 0 var(--shadow-secondary);
         }
         .lab-nav-link:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: #555;
-            color: #fff;
+            background: var(--overlay-hover-strong);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
             transform: translateY(-2px) scale(1.04);
         }
         .lab-nav-link::after {
@@ -184,11 +232,11 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid #333;
+            background: var(--overlay-secondary);
+            border: 1px solid var(--border-primary);
             padding: 0.55rem 1.3rem;
             font-size: 0.95rem;
-            color: #fff;
+            color: var(--text-primary);
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 0.07em;
@@ -196,12 +244,12 @@
             border-radius: 2rem;
             transition: all 0.3s cubic-bezier(.4,0,.2,1);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+            box-shadow: 0 2px 12px 0 var(--shadow-secondary);
         }
         .back-link:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: #555;
-            color: #fff;
+            background: var(--overlay-hover-strong);
+            border-color: var(--accent-secondary);
+            color: var(--text-primary);
             transform: translateY(-2px) scale(1.04);
         }
         /* Subtle grid background */
@@ -213,8 +261,8 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 50px 50px;
             pointer-events: none;
             z-index: -1;
@@ -236,10 +284,62 @@
             }
             .explanation { max-width: 100%; }
         }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--overlay-secondary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px var(--shadow-secondary);
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--overlay-hover-strong);
+            border-color: var(--accent-secondary);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .theme-toggle .icon {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover .icon {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 600px) {
+            .theme-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <a href="index.html" class="back-link">← Back to Main</a>
+    
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="icon" id="themeIcon">🌙</span>
+    </button>
+    
     <div class="lab-nav">
         <a href="https://www.csail.mit.edu/" target="_blank" class="lab-nav-link">CSAIL</a>
         <a href="branding.html" class="lab-nav-link">Branding</a>
@@ -278,5 +378,30 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to dark
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+    </script>
 </body>
 </html> 
