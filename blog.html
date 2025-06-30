@@ -576,6 +576,38 @@
             border-radius: 8px;
             box-shadow: 0 2px 16px 0 var(--shadow-secondary);
         }
+
+        .post-full aside {
+            display: flex;
+            align-items: flex-start;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 1em 1.2em;
+            margin: 1.5em 0;
+            font-size: inherit;
+            word-break: break-word;
+        }
+
+        .post-full .aside-emoji {
+            font-size: 1.3em;
+            margin-right: 0.6em;
+            align-self: flex-start;
+            margin-top: 0.1em;
+            line-height: 1;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        .post-full .aside-content {
+            flex: 1;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        [data-theme='dark'] .post-full aside {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -616,10 +648,18 @@
             <div class="post-full" id="post-full-content"></div>
             <!-- Minimal Comment Section -->
             <div id="comments" style="margin-top:2.5rem;">
-              <script src="https://utteranc.es/client.js"
-                repo="Improbable-AI/improbable-ai.github.io"
-                issue-term="pathname"
-                theme="github-light"
+              <script src="https://giscus.app/client.js"
+                data-repo="Improbable-AI/improbable-ai.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzOTY1ODM4NzE="
+                data-category="Blog Comment"
+                data-category-id="DIC_kwDOF6Njv84CsR-Q"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="dark"
+                data-lang="en"
                 crossorigin="anonymous"
                 async>
               </script>
@@ -645,6 +685,10 @@
             {
                 file: 'posts/2025-02-01-how-to-write-blog-posts.md',
                 slug: '2025-02-01-how-to-write-blog-posts'
+            },
+            {
+                file: 'posts/2026-06-30-constrained-rl.md', 
+                slug: '2026-06-30-constrained-rl'
             }
         ];
 
@@ -847,6 +891,21 @@
                 ],
                 throwOnError: false
             });
+
+            // Process asides
+            document.querySelectorAll('.post-full aside').forEach(el => {
+                let lines = el.innerHTML.trim().split(/<br\s*\/?>|\n/);
+                if (lines.length > 1 && /^\p{Emoji}/u.test(lines[0].trim())) {
+                    const emoji = lines[0].trim();
+                    // Remove all leading empty lines after the emoji
+                    let contentLines = lines.slice(1);
+                    while (contentLines.length && contentLines[0].trim() === '') {
+                        contentLines.shift();
+                    }
+                    const content = contentLines.join('<br>').trim();
+                    el.innerHTML = `<span class="aside-emoji">${emoji}</span><div class="aside-content">${content}</div>`;
+                }
+            });
         }
 
         // Show blog list
@@ -922,6 +981,11 @@
         const currentTheme = localStorage.getItem('theme') || 'dark';
         html.setAttribute('data-theme', currentTheme);
         updateThemeIcon(currentTheme);
+        
+        // Set initial Giscus theme
+        setTimeout(() => {
+            updateGiscusTheme(currentTheme);
+        }, 1000); // Small delay to ensure Giscus is loaded
 
         themeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
@@ -930,10 +994,24 @@
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeIcon(newTheme);
+            
+            // Update Giscus theme
+            updateGiscusTheme(newTheme);
         });
 
         function updateThemeIcon(theme) {
             themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function updateGiscusTheme(theme) {
+            const giscusFrame = document.querySelector('iframe[src*="giscus.app"]');
+            if (giscusFrame) {
+                const giscusTheme = theme === 'dark' ? 'dark' : 'light';
+                giscusFrame.contentWindow.postMessage(
+                    { giscus: { setConfig: { theme: giscusTheme } } },
+                    'https://giscus.app'
+                );
+            }
         }
     </script>
 </body>
