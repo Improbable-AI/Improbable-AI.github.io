@@ -1,8 +1,8 @@
 ---
 title: "Constrained RL"
 date: "2026-06-30"
-author: "Jyo Pari"
-tags: ["how-to"]
+author: "Idan Shenfeld"
+tags: ["tutorial"]
 excerpt: "A step-by-step guide for adding new blog posts, with examples of images, equations, and formatting."
 featured: false
 ---
