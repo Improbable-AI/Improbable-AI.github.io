@@ -4,6 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Blog - Improbable AI Research Lab</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://improbable-ai.github.io/blog.html">
+    <meta property="og:title" content="Research Blog - Improbable AI Research Lab">
+    <meta property="og:description" content="Latest insights and breakthroughs from the Improbable AI Research Lab. Discover our cutting-edge work in robotics, AI, and machine learning.">
+    <meta property="og:image" content="https://improbable-ai.github.io/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Improbable AI Research Lab">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://improbable-ai.github.io/blog.html">
+    <meta property="twitter:title" content="Research Blog - Improbable AI Research Lab">
+    <meta property="twitter:description" content="Latest insights and breakthroughs from the Improbable AI Research Lab. Discover our cutting-edge work in robotics, AI, and machine learning.">
+    <meta property="twitter:image" content="https://improbable-ai.github.io/images/og-image.jpg">
+    <meta property="twitter:creator" content="@improbable_ai">
+    
+    <!-- Additional meta tags for better SEO and sharing -->
+    <meta name="description" content="Latest insights and breakthroughs from the Improbable AI Research Lab. Discover our cutting-edge work in robotics, AI, and machine learning.">
+    <meta name="keywords" content="AI, robotics, machine learning, research, artificial intelligence, Improbable AI">
+    <meta name="author" content="Improbable AI Research Lab">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <style>
         * {
@@ -1021,6 +1049,9 @@
             const postPage = document.getElementById('post-page');
             const content = document.getElementById('post-full-content');
             
+            // Update meta tags for social sharing
+            updateMetaTags(post);
+            
             // Hide blog list and tag filter, show post page
             blogList.style.display = 'none';
             tagFilter.style.display = 'none';
@@ -1080,6 +1111,104 @@
                     tocContainer.classList.add('visible');
                 }
             }, 300);
+        }
+
+        // Update meta tags for social sharing
+        function updateMetaTags(post) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const postUrl = `${baseUrl}?post=${post.slug}`;
+            
+            // Default image if post doesn't have one
+            const defaultImage = 'https://improbable-ai.github.io/images/og-image.jpg';
+            const postImage = post.image || defaultImage;
+            
+            // Create description from excerpt or first paragraph
+            let description = post.excerpt || 'Read the full article on Improbable AI Research Lab.';
+            if (description.length > 160) {
+                description = description.substring(0, 157) + '...';
+            }
+            
+            // Update Open Graph tags
+            updateMetaTag('og:type', 'article');
+            updateMetaTag('og:url', postUrl);
+            updateMetaTag('og:title', post.title);
+            updateMetaTag('og:description', description);
+            updateMetaTag('og:image', postImage);
+            updateMetaTag('og:site_name', 'Improbable AI Research Lab');
+            
+            // Add article-specific Open Graph tags
+            updateMetaTag('article:published_time', post.date);
+            updateMetaTag('article:author', post.author);
+            if (post.tags) {
+                post.tags.forEach(tag => {
+                    addMetaTag('article:tag', tag);
+                });
+            }
+            
+            // Update Twitter Card tags
+            updateMetaTag('twitter:card', 'summary_large_image');
+            updateMetaTag('twitter:url', postUrl);
+            updateMetaTag('twitter:title', post.title);
+            updateMetaTag('twitter:description', description);
+            updateMetaTag('twitter:image', postImage);
+            
+            // Update page title
+            document.title = `${post.title} - Improbable AI Research Lab`;
+            
+            // Update canonical URL
+            updateMetaTag('canonical', postUrl);
+        }
+
+        // Helper function to update existing meta tags
+        function updateMetaTag(property, content) {
+            let meta = document.querySelector(`meta[property="${property}"]`) || 
+                      document.querySelector(`meta[name="${property}"]`);
+            
+            if (meta) {
+                meta.setAttribute('content', content);
+            } else {
+                // Create new meta tag if it doesn't exist
+                meta = document.createElement('meta');
+                if (property.startsWith('og:')) {
+                    meta.setAttribute('property', property);
+                } else {
+                    meta.setAttribute('name', property);
+                }
+                meta.setAttribute('content', content);
+                document.head.appendChild(meta);
+            }
+        }
+
+        // Helper function to add new meta tags (for article:tag)
+        function addMetaTag(property, content) {
+            const meta = document.createElement('meta');
+            meta.setAttribute('property', property);
+            meta.setAttribute('content', content);
+            document.head.appendChild(meta);
+        }
+
+        // Reset meta tags to default blog page values
+        function resetMetaTags() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            
+            updateMetaTag('og:type', 'website');
+            updateMetaTag('og:url', baseUrl);
+            updateMetaTag('og:title', 'Research Blog - Improbable AI Research Lab');
+            updateMetaTag('og:description', 'Latest insights and breakthroughs from the Improbable AI Research Lab. Discover our cutting-edge work in robotics, AI, and machine learning.');
+            updateMetaTag('og:image', 'https://improbable-ai.github.io/images/og-image.jpg');
+            updateMetaTag('og:site_name', 'Improbable AI Research Lab');
+            
+            updateMetaTag('twitter:card', 'summary_large_image');
+            updateMetaTag('twitter:url', baseUrl);
+            updateMetaTag('twitter:title', 'Research Blog - Improbable AI Research Lab');
+            updateMetaTag('twitter:description', 'Latest insights and breakthroughs from the Improbable AI Research Lab. Discover our cutting-edge work in robotics, AI, and machine learning.');
+            updateMetaTag('twitter:image', 'https://improbable-ai.github.io/images/og-image.jpg');
+            
+            document.title = 'Research Blog - Improbable AI Research Lab';
+            updateMetaTag('canonical', baseUrl);
+            
+            // Remove article-specific tags
+            document.querySelectorAll('meta[property^="article:"]').forEach(meta => meta.remove());
         }
 
         // Generate table of contents from headings
@@ -1179,6 +1308,9 @@
             const tagFilter = document.getElementById('tag-filter');
             const postPage = document.getElementById('post-page');
             const tocContainer = document.getElementById('toc-container');
+            
+            // Reset meta tags to default blog page values
+            resetMetaTags();
             
             // Show blog list and tag filter, hide post page
             blogList.style.display = 'grid';

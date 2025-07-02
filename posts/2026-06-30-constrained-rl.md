@@ -5,6 +5,7 @@ author: "Idan Shenfeld"
 tags: ["tutorial"]
 excerpt: "A step-by-step guide for adding new blog posts, with examples of images, equations, and formatting."
 featured: false
+image: "https://improbable-ai.github.io/images/constrained-rl-preview.jpg"
 ---
 
 # A short Introduction to Constrained RL
@@ -13,7 +14,7 @@ featured: false
 
 Bad illustration of Constrained RL, thanks to DALLE
 
-In many real-world applications of reinforcement learning — from robotics to healthcare to finance — it's not enough to simply maximize reward. Agents must also operate safely, ethically, or within resource limits. For example, a robot vacuum should clean as efficiently as possible without damaging furniture; a trading algorithm might seek profit while limiting risk exposure. These kinds of *constraints* are essential but often hard to encode directly into standard RL objectives. This is where **Constrained Reinforcement Learning (CRL)** comes in — a principled framework that extends classic RL to handle hard or soft limits on agent behavior. In this post, we’ll explore how CRL works, why it’s tricky, and the tools that help make it practical.
+In many real-world applications of reinforcement learning — from robotics to healthcare to finance — it's not enough to simply maximize reward. Agents must also operate safely, ethically, or within resource limits. For example, a robot vacuum should clean as efficiently as possible without damaging furniture; a trading algorithm might seek profit while limiting risk exposure. These kinds of *constraints* are essential but often hard to encode directly into standard RL objectives. This is where **Constrained Reinforcement Learning (CRL)** comes in — a principled framework that extends classic RL to handle hard or soft limits on agent behavior. In this post, we'll explore how CRL works, why it's tricky, and the tools that help make it practical.
 
 ## Background - Constrained Optimization
 
@@ -81,7 +82,7 @@ $$
 \max_\lambda \min_x L(x,\lambda)
 $$
 
-In general, solving these two problems doesn’t always leads to the same solution. However, in constrained RL, under mild assumptions, **the solutions of the primal and dual problems are identical** ([Paternain et al. 2019](https://proceedings.neurips.cc/paper/2019/file/c1aeb6517a1c7f33514f7ff69047e74e-Paper.pdf), [Rozada et al. 2023](https://arxiv.org/pdf/2408.10015)). 
+In general, solving these two problems doesn't always leads to the same solution. However, in constrained RL, under mild assumptions, **the solutions of the primal and dual problems are identical** ([Paternain et al. 2019](https://proceedings.neurips.cc/paper/2019/file/c1aeb6517a1c7f33514f7ff69047e74e-Paper.pdf), [Rozada et al. 2023](https://arxiv.org/pdf/2408.10015)). 
 
 ---
 
@@ -128,7 +129,7 @@ For a fixed set of Lagrangian multipliers, this is a non-constrained RL problem 
 1. Solve for $\pi$ using the reward $\tilde r$ using any model-free RL algorithm.
 2. Update each Lagrange multiplier using the gradient step $\nabla\lambda_i= \mathbb E_\pi[\sum_t\gamma^tc_i(s_t,a_t)]$
 
-This is the most standard way to handle CRL ([Borkar et al. 2005](https://www.sciencedirect.com/science/article/pii/S0167691104001276?casa_token=VhQ5ghdt1ogAAAAA:MyWhCsrltqnTRuGnKOt80euQiJUbbZ0i81CHmypB31w1gOPlopPnrbu_2VdRDCqSA5hUdXVG2A), [Tessler et al. 2019](https://arxiv.org/pdf/1805.11074)) , and what people usually mean when they say “solving with Lagrangian”. Usually, step 1 will not be solved until convergence, but only for a few optimization steps (see [Paternain et al. 2022](https://arxiv.org/pdf/1911.09101) for an analysis of this approximation).
+This is the most standard way to handle CRL ([Borkar et al. 2005](https://www.sciencedirect.com/science/article/pii/S0167691104001276?casa_token=VhQ5ghdt1ogAAAAA:MyWhCsrltqnTRuGnKOt80euQiJUbbZ0i81CHmypB31w1gOPlopPnrbu_2VdRDCqSA5hUdXVG2A), [Tessler et al. 2019](https://arxiv.org/pdf/1805.11074)) , and what people usually mean when they say "solving with Lagrangian". Usually, step 1 will not be solved until convergence, but only for a few optimization steps (see [Paternain et al. 2022](https://arxiv.org/pdf/1911.09101) for an analysis of this approximation).
 
 <aside>
 💡
@@ -139,7 +140,7 @@ $$
 Q_{\tilde r}(s,a)=Q_r(s,a)+\sum_{i=1}^m\lambda_iQ_{c_i}(s,a)
 $$
 
-That way the Q network doesn’t need to be changed every time we change the Lagrange multipliers ([Achiam et al. 2017](https://arxiv.org/pdf/1705.10528)).
+That way the Q network doesn't need to be changed every time we change the Lagrange multipliers ([Achiam et al. 2017](https://arxiv.org/pdf/1705.10528)).
 
 </aside>
 
