@@ -362,11 +362,26 @@
             transition: all 0.3s ease;
             opacity: 0;
             visibility: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-primary) var(--bg-secondary);
         }
 
         .toc-container.visible {
             opacity: 1;
             visibility: visible;
+        }
+
+        .toc-container::-webkit-scrollbar {
+            width: 10px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        .toc-container::-webkit-scrollbar-thumb {
+            background: var(--border-primary);
+            border-radius: 8px;
+        }
+        .toc-container::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
         }
 
         .toc-title {
