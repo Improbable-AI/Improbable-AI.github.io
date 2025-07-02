@@ -165,6 +165,23 @@
             opacity: 0.7;
         }
 
+        /* Hide text on mobile, show only icon */
+        @media (max-width: 768px) {
+            .nav-link {
+                padding: 0.55rem;
+                min-width: 2.5rem;
+                justify-content: center;
+            }
+            
+            .nav-link::before {
+                margin-right: 0;
+            }
+            
+            .nav-link span {
+                display: none;
+            }
+        }
+
         /* Tag Filter */
         .tag-filter {
             margin: 3rem 0 2rem;
@@ -787,6 +804,21 @@
             background: var(--bg-tertiary);
             color: var(--text-secondary);
         }
+
+        /* Prevent math equations and asides from overflowing on mobile */
+        .katex-display {
+            overflow-x: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding-bottom: 0.5em;
+        }
+
+        .post-full aside {
+            overflow-x: auto;
+            word-break: break-word;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -794,7 +826,7 @@
 </head>
 <body>
     <div class="nav">
-        <a href="index.html" class="nav-link">Back to Home</a>
+        <a href="index.html" class="nav-link"><span>Back to Home</span></a>
     </div>
 
     <!-- Theme Toggle Button -->
