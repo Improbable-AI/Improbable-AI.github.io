@@ -1,11 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: 📧 General Questions
-    url: mailto:your-lab-email@mit.edu
+    url: mailto:younghyo@mit.edu
     about: Please use this for general questions about the lab or website.
-  - name: 🐛 Website Bug Report
-    url: https://github.com/Improbable-AI/improbable-ai.github.io/issues/new?template=bug-report.md
-    about: Report bugs or issues with the website functionality.
-  - name: 💡 Feature Request
-    url: https://github.com/Improbable-AI/improbable-ai.github.io/issues/new?template=feature-request.md
-    about: Suggest new features or improvements for the website. 
