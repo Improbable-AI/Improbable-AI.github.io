@@ -343,6 +343,116 @@
             margin-top: 1rem;
         }
 
+        /* Table of Contents */
+        .toc-container {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px var(--shadow-primary);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .toc-container.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .toc-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-link {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            padding: 0.3rem 0 0.3rem 0.7rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .toc-link:hover {
+            color: var(--text-primary);
+            background: var(--overlay-primary);
+        }
+
+        .toc-link.active {
+            color: var(--text-primary);
+            background: var(--overlay-hover);
+            font-weight: 500;
+        }
+
+        .toc-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 0;
+            background: var(--accent-secondary);
+            transition: height 0.2s ease;
+            border-radius: 2px;
+        }
+
+        .toc-h1 {
+            padding-left: 0.7rem;
+            font-weight: 500;
+        }
+
+        .toc-h2 {
+            padding-left: 1.7rem;
+            font-size: 0.8rem;
+        }
+
+        .toc-h3 {
+            padding-left: 2.7rem;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .toc-h3:hover {
+            color: var(--text-secondary);
+        }
+
+        /* Hide ToC on mobile */
+        @media (max-width: 1024px) {
+            .toc-container {
+                display: none;
+            }
+        }
+
         .post-full h1 {
             font-size: 2.5rem;
             font-weight: 600;
@@ -487,6 +597,32 @@
             .tag-button {
                 padding: 0.4rem 1rem;
                 font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 0.3rem;
+            }
+            .header {
+                padding: 2rem 0 1.5rem;
+            }
+            .post-full {
+                padding: 1rem 0.1rem;
+                background: none;
+                border: none;
+                font-size: 0.97rem;
+                box-shadow: none;
+            }
+            .blog-posts {
+                gap: 1.2rem;
+                margin: 2rem 0;
+            }
+            .post-content {
+                padding: 1rem 0.1rem;
+            }
+            .post-full img {
+                margin: 1rem auto;
             }
         }
 
@@ -645,16 +781,24 @@
         <!-- Individual Post Page -->
         <div class="post-page" id="post-page">
             <a href="#" class="post-back" onclick="showBlogList()">Back to Blog</a>
+            
+            <!-- Table of Contents -->
+            <div class="toc-container" id="toc-container">
+                <div class="toc-title">Table of Contents</div>
+                <ul class="toc-list" id="toc-list"></ul>
+            </div>
+            
             <div class="post-full" id="post-full-content"></div>
             <!-- Minimal Comment Section -->
             <div id="comments" style="margin-top:2.5rem;">
-              <script src="https://giscus.app/client.js"
+              <script id="giscus-script" src="https://giscus.app/client.js"
                 data-repo="Improbable-AI/improbable-ai.github.io"
                 data-repo-id="MDEwOlJlcG9zaXRvcnkzOTY1ODM4NzE="
                 data-category="Blog Comment"
                 data-category-id="DIC_kwDOF6Njv84CsR-Q"
-                data-mapping="pathname"
-                data-strict="0"
+                data-mapping="specific"
+                data-term=""
+                data-strict="1"
                 data-reactions-enabled="1"
                 data-emit-metadata="0"
                 data-input-position="bottom"
@@ -867,6 +1011,10 @@
             tagFilter.style.display = 'none';
             postPage.classList.add('active');
             
+            // Update Giscus configuration for this specific post
+            const giscusScript = document.getElementById('giscus-script');
+            giscusScript.setAttribute('data-term', `${window.location.origin}${window.location.pathname}#${post.slug}`);
+            
             // Render markdown content with math support
             const htmlContent = marked.parse(post.content);
             
@@ -906,6 +1054,108 @@
                     el.innerHTML = `<span class="aside-emoji">${emoji}</span><div class="aside-content">${content}</div>`;
                 }
             });
+
+            // Generate table of contents
+            generateTableOfContents();
+            
+            // Show ToC after a short delay
+            setTimeout(() => {
+                const tocContainer = document.getElementById('toc-container');
+                if (tocContainer) {
+                    tocContainer.classList.add('visible');
+                }
+            }, 300);
+        }
+
+        // Generate table of contents from headings
+        function generateTableOfContents() {
+            const content = document.getElementById('post-full-content');
+            const tocList = document.getElementById('toc-list');
+            
+            if (!content || !tocList) return;
+            
+            const headings = content.querySelectorAll('h1, h2, h3');
+            const tocItems = [];
+            
+            headings.forEach((heading, index) => {
+                // Generate ID for the heading if it doesn't have one
+                if (!heading.id) {
+                    heading.id = `heading-${index}`;
+                }
+                
+                const level = parseInt(heading.tagName.charAt(1));
+                const text = heading.textContent.trim();
+                const id = heading.id;
+                
+                tocItems.push({
+                    level,
+                    text,
+                    id,
+                    element: heading
+                });
+            });
+            
+            // Generate ToC HTML
+            const tocHTML = tocItems.map(item => {
+                const className = `toc-h${item.level}`;
+                return `
+                    <li class="toc-item">
+                        <a href="#${item.id}" class="toc-link ${className}" data-target="${item.id}">
+                            ${item.text}
+                        </a>
+                    </li>
+                `;
+            }).join('');
+            
+            tocList.innerHTML = tocHTML;
+            
+            // Add click event listeners for smooth scrolling
+            tocList.querySelectorAll('.toc-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Set up intersection observer for active section tracking
+            setupIntersectionObserver(tocItems);
+        }
+
+        // Set up intersection observer to track active sections
+        function setupIntersectionObserver(tocItems) {
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const tocLink = document.querySelector(`.toc-link[data-target="${id}"]`);
+                    
+                    if (entry.isIntersecting) {
+                        // Remove active class from all links
+                        tocLinks.forEach(link => link.classList.remove('active'));
+                        // Add active class to current link
+                        if (tocLink) {
+                            tocLink.classList.add('active');
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '-20% 0px -70% 0px',
+                threshold: 0
+            });
+            
+            // Observe all heading elements
+            tocItems.forEach(item => {
+                observer.observe(item.element);
+            });
         }
 
         // Show blog list
@@ -913,11 +1163,17 @@
             const blogList = document.getElementById('blog-posts');
             const tagFilter = document.getElementById('tag-filter');
             const postPage = document.getElementById('post-page');
+            const tocContainer = document.getElementById('toc-container');
             
             // Show blog list and tag filter, hide post page
             blogList.style.display = 'grid';
             tagFilter.style.display = 'block';
             postPage.classList.remove('active');
+            
+            // Hide ToC
+            if (tocContainer) {
+                tocContainer.classList.remove('visible');
+            }
             
             // Update URL
             window.history.pushState({}, '', window.location.pathname);
@@ -983,6 +1239,11 @@
         updateThemeIcon(currentTheme);
         
         // Set initial Giscus theme
+        const giscusScript = document.getElementById('giscus-script');
+        giscusScript.setAttribute('data-theme', currentTheme);
+        giscusScript.setAttribute('data-term', `${window.location.origin}${window.location.pathname}`);
+        
+        // Set initial Giscus theme after load
         setTimeout(() => {
             updateGiscusTheme(currentTheme);
         }, 1000); // Small delay to ensure Giscus is loaded
