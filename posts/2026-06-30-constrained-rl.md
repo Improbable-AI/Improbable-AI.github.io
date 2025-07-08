@@ -1,5 +1,5 @@
 ---
-title: "Constrained RL"
+title: "A short Introduction to Constrained RL"
 date: "2026-06-30"
 author: "Idan Shenfeld"
 tags: ["tutorial"]

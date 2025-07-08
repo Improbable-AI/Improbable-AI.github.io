@@ -774,6 +774,29 @@
             box-shadow: 0 2px 16px 0 var(--shadow-secondary);
         }
 
+        .post-full figure {
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .post-full figure img {
+            margin: 0 auto;
+        }
+
+        .post-full figcaption {
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            font-style: italic;
+            line-height: 1.4;
+            max-width: 100%;
+            transition: color 0.3s ease;
+        }
+
+        .post-full figcaption:hover {
+            color: var(--text-secondary);
+        }
+
         .post-full aside {
             display: flex;
             align-items: flex-start;
@@ -907,9 +930,13 @@
             //     file: 'posts/2025-01-05-machine-learning-foundations.md',
             //     slug: '2025-01-05-machine-learning-foundations'
             // },
+            // {
+            //     file: 'posts/2025-02-01-how-to-write-blog-posts.md',
+            //     slug: '2025-02-01-how-to-write-blog-posts'
+            // },
             {
-                file: 'posts/2025-02-01-how-to-write-blog-posts.md',
-                slug: '2025-02-01-how-to-write-blog-posts'
+                file: 'posts/2026-07-07-is-rl-truly-pushing-llm-reasoning.md',
+                slug: '2026-07-07-is-rl-truly-pushing-llm-reasoning'
             },
             {
                 file: 'posts/2026-06-30-constrained-rl.md', 
@@ -1122,6 +1149,26 @@
                     {left: '$', right: '$', display: false}
                 ],
                 throwOnError: false
+            });
+
+            // Process images to add captions
+            document.querySelectorAll('.post-full img').forEach(img => {
+                const alt = img.getAttribute('alt');
+                if (alt && alt.trim() !== '') {
+                    // Create figure wrapper
+                    const figure = document.createElement('figure');
+                    const figcaption = document.createElement('figcaption');
+                    figcaption.textContent = alt;
+                    
+                    // Insert figure before the image
+                    img.parentNode.insertBefore(figure, img);
+                    
+                    // Move image into figure
+                    figure.appendChild(img);
+                    
+                    // Add caption
+                    figure.appendChild(figcaption);
+                }
             });
 
             // Process asides
