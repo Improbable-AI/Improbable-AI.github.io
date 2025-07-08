@@ -70,8 +70,6 @@ Further, a recent paper from Nvidia [5] demonstrated that novel behaviors could 
 
 ![            Scaling up RL can lead to model that surpass the base models even at Pass@k. Figure from [5].](posts/is-rl-truly-pushing-llm-reasoning/image%201.png)
 
-            Scaling up RL can lead to model that surpass the base models even at Pass@k. Figure from [5].
-
 ### Looking to the future
 
 RL isn't inherently limited; it’s practically constrained by our current sampling methods and compute budgets. While the big industrial labs push the boundary by scaling things up, not everyone has Google-scale resources. However, there are a few directions we can take to help mitigate the issue even at a smaller scale:
