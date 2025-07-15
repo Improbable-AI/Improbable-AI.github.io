@@ -18,7 +18,7 @@ A recent paper from Tsinghua University [1] posed an intriguing and somewhat pro
 
 To dig into this, the authors introduced an idea called the *reasoning capability boundary*. Here's the intuition:  They repeatedly generated responses from the base model to the same prompt. As they increase the number of samples (up to 1024), they get a set of all possible responses the model might give. This set of possible answers is the boundary of the model's current reasoning capability.
 
-![While RL models shows better Pass@1, their advantage disappear at Pass@k for large k. Figure from [1].](posts/is-rl-truly-pushing-llm-reasoning/image.png)
+![While RL models shows better Pass@1, their advantage disappear at Pass@k for large k. Figure from [1].](posts/is-rl-truly-pushing-llm-reasoning/image_black.png)
 
 
 What they found is that even after RL from Verifiable Rewards (RLVR) training, the model's answers were still inside the boundary of the base model. Or, in their words:
@@ -68,7 +68,7 @@ We actually have evidence for the existence of this second phase of discovering 
 
 Further, a recent paper from Nvidia [5] demonstrated that novel behaviors could emerge even in a relatively small 1.5B model, provided you scale the RL training sufficiently, both in task diversity and the number of gradient steps. Their analysis showed the model generating responses completely outside the reasoning boundary of its base model, achieving 100% pass@1 on prompts where the base model scored 0% pass@k, even for large k.
 
-![            Scaling up RL can lead to model that surpass the base models even at Pass@k. Figure from [5].](posts/is-rl-truly-pushing-llm-reasoning/image%201.png)
+![            Scaling up RL can lead to model that surpass the base models even at Pass@k. Figure from [5].](posts/is-rl-truly-pushing-llm-reasoning/image%201_black.png)
 
 ### Looking to the future
 
