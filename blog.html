@@ -1154,22 +1154,52 @@
             // Process images to add captions
             document.querySelectorAll('.post-full img').forEach(img => {
                 const alt = img.getAttribute('alt');
+                const src = img.getAttribute('src');
+                // Only process .png images that are not already _black.png
+                if (src && src.endsWith('.png') && !src.endsWith('_black.png')) {
+                    // Store original src for toggling
+                    img.dataset.originalSrc = src;
+                    img.dataset.blackSrc = src.replace(/\.png$/, '_black.png');
+                }
                 if (alt && alt.trim() !== '') {
                     // Create figure wrapper
                     const figure = document.createElement('figure');
                     const figcaption = document.createElement('figcaption');
                     figcaption.textContent = alt;
-                    
                     // Insert figure before the image
                     img.parentNode.insertBefore(figure, img);
-                    
                     // Move image into figure
                     figure.appendChild(img);
-                    
                     // Add caption
                     figure.appendChild(figcaption);
                 }
             });
+
+            // Swap image sources based on theme
+            function updatePostImagesForTheme(theme) {
+                document.querySelectorAll('.post-full img').forEach(img => {
+                    const src = img.getAttribute('src');
+                    // Only process .png images that are not already _black.png
+                    if (src && src.endsWith('.png') && !src.endsWith('_black.png')) {
+                        // Store original src for toggling if not already set
+                        if (!img.dataset.originalSrc) {
+                            img.dataset.originalSrc = src;
+                        }
+                        if (!img.dataset.blackSrc) {
+                            img.dataset.blackSrc = src.replace(/\.png$/, '_black.png');
+                        }
+                    }
+                    if (img.dataset.originalSrc && img.dataset.blackSrc) {
+                        if (theme === 'dark') {
+                            img.src = img.dataset.blackSrc;
+                        } else {
+                            img.src = img.dataset.originalSrc;
+                        }
+                    }
+                });
+            }
+            // Initial image update after post render
+            updatePostImagesForTheme(document.documentElement.getAttribute('data-theme'));
 
             // Process asides
             document.querySelectorAll('.post-full aside').forEach(el => {
@@ -1490,6 +1520,8 @@
             
             // Update Giscus theme
             updateGiscusTheme(newTheme);
+            // Update post images for new theme
+            updatePostImagesForTheme(newTheme);
         });
 
         function updateThemeIcon(theme) {
